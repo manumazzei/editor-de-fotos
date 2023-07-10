@@ -9,17 +9,16 @@ import {
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
-export const signUp = (email, password) => {
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(userCredential);
-    })
-    .catch((error) => {
+export const signUp = async (email, password) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    return user;
+  } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(error);
-    });
+    };
 };
 
 export const signIn = async (email, password) => {
@@ -35,8 +34,6 @@ export const signIn = async (email, password) => {
 export const signInGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
-
-    // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
     const user = result.user;
