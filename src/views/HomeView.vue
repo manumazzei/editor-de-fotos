@@ -33,7 +33,7 @@
 <style scoped>
 h1 {
   font-size: 6rem;
-  font-family: "Architects Daughter", cursive;
+  font-family: 'Lobster Two', cursive;
   color: rgb(75, 129, 131);
 }
 .content{
