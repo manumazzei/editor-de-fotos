@@ -1,11 +1,16 @@
-import './assets/main.css'
+import "../firebase.config";
+import './assets/main.css';
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import fabric from 'fabric';
 
-const app = createApp(App)
+import "@/modules/photos";
 
-app.use(router)
+const app = createApp(App);
 
-app.mount('#app')
+app.use(router);
+
+app.mount('#app');
+
