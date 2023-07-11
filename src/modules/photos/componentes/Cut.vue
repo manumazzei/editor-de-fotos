@@ -14,10 +14,7 @@ export default {
       this.fabricCanvas = new fabric.Canvas(canvasElement);
       
       if (this.fabricImage) {
-        const cropX = this.fabricImage.cropX;
-        const cropY = this.fabricImage.cropY;
-        const cropWidth = this.fabricImage.cropWidth;
-        const cropHeight = this.fabricImage.cropHeight;
+        const {cropX, cropY, cropWidth, cropHeight} = this.fabricImage
 
         const croppedImage = new fabric.Image(this.fabricImage.getElement(), {
           left: cropX * this.fabricImage.width,
