@@ -4,12 +4,12 @@
   <div v-if="showFiltros">
     <label for="filter">Filtro:</label>
     <select id="filter" v-model="selectedFilter">
-      <option value="none">Nenhum</option>
-      <option value="grayscale">Tons de Cinza</option>
-      <option value="sepia">Sépia</option>
-      <option value="invert">Inverter Cores</option>
-      <option value="brightness">Brilho</option>
-      <option value="contrast">Contraste</option>
+      <option value="None">Nenhum</option>
+      <option value="Grayscale">Tons de Cinza</option>
+      <option value="Sepia">Sépia</option>
+      <option value="Invert">Inverter Cores</option>
+      <option value="Brightness">Brilho</option>
+      <option value="Contrast">Contraste</option>
     </select>
     <div
       v-if="selectedFilter === 'brightness' || selectedFilter === 'contrast'"
@@ -45,6 +45,24 @@ export default {
       if (this.image) {
         this.image.filters = [];
 
+        if(this.selectedFilter == 'None') return this.canvas.renderAll();
+        
+        
+        let filterData = undefined
+        if(this.selectedFilter == 'Brightness') {
+          filterData = {
+            brightness: this.filterValue / 100,
+          }
+        } else if(this.selectedFilter == 'Contrast') {
+          filterData = {
+            contrast: this.filterValue / 100,
+          }
+        }
+        
+        this.image.filters.push(new fabric.Image.filters[this.selectedFilter](filterData))
+        this.applyFilters();
+
+        /*
         switch (this.selectedFilter) {
           case "none":
             this.canvas.renderAll();
@@ -77,7 +95,7 @@ export default {
             );
             this.applyFilters();
             break;
-        }
+        }*/
       }
     },
 
