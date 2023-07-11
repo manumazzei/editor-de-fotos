@@ -21,7 +21,7 @@ onMounted(() => {
 
 <template>
   <header>
-    APP FOTOS
+    PhotoMaster
   </header>
 
   <RouterView />
