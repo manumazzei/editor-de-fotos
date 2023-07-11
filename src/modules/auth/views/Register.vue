@@ -11,7 +11,7 @@ const router = useRouter();
 const email = ref("");
 const password = ref("");
 
-const passwordtest = ref("");
+const passwordTest = ref("");
 const passwordType = ref ("password")
 
 async function handleSignUp() {
@@ -24,7 +24,7 @@ async function handleSignUp() {
 }
 
 const confirmPassword = computed(() => {
-  return password.value === passwordtest.value;
+  password.value === passwordTest.value;
 });
 
 const showPassword = () => {
@@ -49,7 +49,7 @@ const showPassword = () => {
       />
 
       <input
-        v-model="passwordtest"
+        v-model="passwordTest"
         :type="passwordType"
         required
         placeholder="Confirm Password"
