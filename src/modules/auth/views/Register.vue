@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/composables/useStore";
 
@@ -10,24 +10,9 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
-const passwordtest = "";
 
-
-const show = false;
-const required = true;
-const form = false;
-
-function passwordRules(input) {
-  let regexSpecial = /\W|_/;
-  let regexNumber = /(\d+)| /g;
-  if (input.includes(" ")) return "No spaces";
-  if ((input.length < 8, !regexSpecial.test(input), !regexNumber.test(input)))
-    return "At least 8 characters, 1 special character and 1 number";
-  return true;
-}
-function confirmPassword(passwordtest) {
-  return passwordtest !== this.password ? "Passwords don't match" : true;
-}
+const passwordtest = ref("");
+const passwordType = ref ("password")
 
 async function handleSignUp() {
   const result = await auth.signUp(email.value, password.value);
@@ -37,42 +22,46 @@ async function handleSignUp() {
   }
   router.push("/login");
 }
+
+const confirmPassword = computed(() => {
+  return password.value === passwordtest.value;
+});
+
+const showPassword = () => {
+  passwordType.value =
+    passwordType.value === "password" ? "text" : "password";
+};
 </script>
 
 <template>
   <h1>REGISTER</h1>
   <main>
     <form>
-
-      <input 
-      required 
-      type="email" 
-      v-model="email" 
-      placeholder="Email" />
+      <input required type="email" v-model="email" placeholder="Email" />
 
       <input
         v-model="password"
+        :type="passwordType"
         required
         placeholder="Password"
+        append-icon="mdi-eye"
+        @click:append="showPassword"
       />
-      <!-- :type="show ? 'text' : 'password'"
-        :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-        @click:append-inner="show = !show" /> -->
 
       <input
         v-model="passwordtest"
+        :type="passwordType"
         required
         placeholder="Confirm Password"
+        append-icon="mdi-eye"
+        @click:append="showPassword"
       />
-      <!-- :type="show ? 'text' : 'password'"
-          :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append-inner="show = !show"/> -->
-      </form>
+    </form>
 
     <button 
-    @click="handleSignUp">
-    Sign Up
-  </button>
+    @click="handleSignUp"
+    :disabled="!confirmPassword"
+    >Sign Up</button>
   </main>
 </template>
 
