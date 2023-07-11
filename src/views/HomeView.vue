@@ -1,9 +1,16 @@
-<script setup>
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <button @click="startEdit">Começar a editar</button>
 </template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    startEdit() {
+      this.$router.push("/editor");
+    },
+  },
+};
+</script>
