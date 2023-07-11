@@ -38,7 +38,7 @@ export default {
       this.showBrilho = true;
     },
     applyFilters() {
-      if (this.fabricImage) {
+      if (!this.fabricImage) return
         const brightness = this.brightness / 100; // Escala de -1 a 1
         const contrast = (this.contrast + 100) / 100; // Escala de 0 a 2
 
