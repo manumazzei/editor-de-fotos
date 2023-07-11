@@ -20,9 +20,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <header>
-    APP FOTOS
-  </header>
-
   <RouterView />
 </template>
