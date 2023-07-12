@@ -17,7 +17,7 @@ async function handleSignIn() {
     alert("email ou senha incorretos");
     return;
   }
-  router.push("/about");
+  router.push("/dashboard");
 }
 
 async function handleSignInGoogle() {
@@ -28,7 +28,7 @@ async function handleSignInGoogle() {
     alert("email ou senha incorretos");
     return;
   }
-  router.push("/about");
+  router.push("/dashboard");
 }
 </script>
 
