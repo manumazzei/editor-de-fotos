@@ -1,23 +1,39 @@
-import { getStorage, ref, listAll } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  listAll,
+  getDownloadURL,
+  getMetadata,
+} from "firebase/storage";
 
 const storage = getStorage();
-const listRef = ref(storage, "files/uid");
+const listRef = ref(storage, );
 
-export const listProjects = () => {
-  listAll(listRef)
-    .then((res) => {
-      res.prefixes.forEach((folderRef) => {
-        listAll(folderRef).then((folderRes) => {
-          const photo = folderRes
-        });
-      });
-      res.items.forEach((itemRef) => {
-        listAll(itemRef).then((itemRes) => {
-          const item = itemRes
-        });
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+// salvar um dado em images no firestore usando userId real de quem está logado e salvando uma url fixa(ex: 'teste')
+// no dashboard, buscar os dados da imagem no firestore e usar a url para buscar a imagem no storage
+
+
+// item é o dado do firestore
+// getDownloadUrl(ref(storage, item.url))
+
+
+// listar os dados de imagens do firestore que tem o userId do usuário logado
+// pegar cada uma das imagens(reais) do storage utilizando o caminho dos dados de imagem do firestore
+
+//
+
+export const listProjects = async () => {
+  try {
+    const res = await listAll(listRef);
+    const items = await Promise.all(
+      res.items.map(async (itemRef) => {
+        const url = await getDownloadURL(itemRef);
+        const data = await getMetadata(itemRef);
+        return { ...data, url };
+      })
+    );
+    return items;
+  } catch (error) {
+    console.log(error);
+  }
 };

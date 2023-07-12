@@ -2,39 +2,32 @@
   <div>
     <h2>Lista de Arquivos</h2>
     <ul>
-      <li v-for="file in files" :key="file.name">
-        {{ file.name }}
+      <li v-for="photo in listStore.photos" :key="photo">
+        <h2>{{ photo.name }}</h2>
+        <img :src="photo.url" width="200" alt="" />
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { storage } from "@/firebase";
-
+import { listStore } from "../store";
 export default {
   data() {
     return {
       files: [],
     };
   },
-  created() {
-    this.listFiles();
+  mounted() {
+    this.listStore.listProjects();
   },
   methods: {
-    async listFiles() {
-      try {
-        const storageRef = storage.ref();
-        const filesRef = storageRef.child();
 
-        const filesSnapshot = await filesRef.listAll();
-        const files = filesSnapshot.items.map((item) => item.name);
-
-        this.files = files;
-      } catch (error) {
-        console.error("Erro ao listar os arquivos:", error);
-      }
-    },
+  },
+  setup() {
+    return {
+      listStore,
+    };
   },
 };
 </script>
