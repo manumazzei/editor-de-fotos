@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 800px; height: 900px; border: 2px solid white">
+  <div>
     <div style="display: flex; justify-content: center; align-items: center">
       <input type="file" id="file-input" @change="handleFileChange" />
       <button @click="uploadFile">Salvar</button>
@@ -70,7 +70,11 @@ export default {
 
 <style scoped>
 canvas {
-  width: 500px;
-  height: 300px;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 80%;
 }
 </style>
