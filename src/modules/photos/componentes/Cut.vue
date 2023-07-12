@@ -1,7 +1,5 @@
 <template>
   <div class="image-cropper">
-    <input type="file" @change="handleImageUpload" accept="image/*" />
-      <canvas ref="canvas"></canvas>
     <button @click="startCrop" v-if="!showCropArea">Recortar</button>
     <button @click="cropImage" v-if="showCropArea">Recortar</button>
     <button @click="cancelCrop" v-if="showCropArea">Cancelar</button>
@@ -9,69 +7,13 @@
   </div>
 </template>
 
-<style>
-.image-cropper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.canvas-container {
-  position: relative;
-  width: 400px;
-  height: 400px;
-  margin-top: 20px;
-  border: 2px dashed gray;
-  overflow: hidden;
-}
-
-.crop-area {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
-  border: 2px dashed red;
-}
-
-.resize-handle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: white;
-  border: 2px solid red;
-}
-
-.resize-handle.top-left {
-  top: -6px;
-  left: -6px;
-  cursor: nwse-resize;
-}
-
-.resize-handle.top-right {
-  top: -6px;
-  right: -6px;
-  cursor: nesw-resize;
-}
-
-.resize-handle.bottom-right {
-  bottom: -6px;
-  right: -6px;
-  cursor: nwse-resize;
-}
-
-.resize-handle.bottom-left {
-  bottom: -6px;
-  left: -6px;
-  cursor: nesw-resize;
-}
-</style>
-
 <script>
 import { fabric } from "fabric";
 
 export default {
+  props: {
+    
+  },
   data() {
     return {
       canvas: null,
