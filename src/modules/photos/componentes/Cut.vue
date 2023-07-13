@@ -11,9 +11,6 @@
 import { fabric } from "fabric";
 
 export default {
-  props: {
-    
-  },
   data() {
     return {
       canvas: null,
