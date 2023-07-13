@@ -1,7 +1,4 @@
 <template>
-  <button @click="startRedimensiona">Redimensionar</button>
-
-  <div v-if="showRedimensiona">
     <div style="display: flex">
       <label for="width">Largura:</label>
       <input
@@ -21,28 +18,28 @@
       />
     </div>
 
-    <button @click="resizeImage">Redimensionar</button>
-    <button @click="showRedimensiona = false">Cancelar</button>
-  </div>
+    <button @click="resizeImage">Confirmar</button>
+    <button @click="$emit('close')">Cancelar</button>
+
 </template>
 
 <script>
 export default {
+  emits: ["close"],
   data() {
     return {
-      showRedimensiona: false,
+      showResize: false,
+      newWidth: 0,
+      newHeight: 0,
     };
   },
   methods: {
-    startRedimensiona() {
-      this.showRedimensiona = true;
+    updatePreview() {
+      // adicionar a atualização
     },
     resizeImage() {
-      if (this.fabricImage && this.newWidth > 0 && this.newHeight > 0) {
-        this.fabricImage.scaleToWidth(this.newWidth);
-        this.fabricImage.scaleToHeight(this.newHeight);
-
-        reader.readAsDataURL(file);
+      if (this.newWidth > 0 && this.newHeight > 0) {
+        this.$emit("resize", this.newWidth, this.newHeight);
       }
     },
   },
