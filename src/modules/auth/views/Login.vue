@@ -67,6 +67,7 @@ async function handleSignInGoogle() {
           elevation="4"
           height="60px"
           @click="handleSignIn"
+          :disabled="!password"
           >Log In</v-btn
         >
       </div>

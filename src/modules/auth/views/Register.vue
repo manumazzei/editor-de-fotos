@@ -50,7 +50,7 @@ const confirmPassword = computed(() => {
           required
           variant="underlined"
           label="Password"
-          append-inner-icon="mdi-eye"
+        
         />
 
         <v-text-field
@@ -59,7 +59,7 @@ const confirmPassword = computed(() => {
           required
           variant="underlined"
           label="Confirm Password"
-          append-inner-icon="mdi-eye"
+          
         />
       </v-form>
       <v-divider class="my-6" />
