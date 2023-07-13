@@ -1,5 +1,5 @@
 <template>
-  <button @click="startBrilho">Brilho e Contraste</button>
+  <v-btn @click="startBrilho">Brilho e Contraste</v-btn>
 
   <div v-if="showBrilho">
     <label for="brightness">Brilho:</label>
@@ -20,9 +20,9 @@
       max="100"
       step="1"
     />
-    <button @click="applyFilters">Aplicar Filtros</button>
-    <button @click="resetFilters">Redefinir Filtros</button>
-    <button @click="showBrilho = false">Cancelar</button>
+    <v-btn @click="applyFilters">Aplicar Filtros</v-btn>
+    <v-btn @click="resetFilters">Redefinir Filtros</v-btn>
+    <v-btn @click="showBrilho = false">Cancelar</v-btn>
   </div>
 </template>
 

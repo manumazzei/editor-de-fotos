@@ -37,9 +37,9 @@ async function handleSignInGoogle() {
   <main>
     <input type="email" v-model="email" />
     <input type="text" v-model="password" />
-    <button @click="handleSignIn">Log In</button>
+    <v-btn @click="handleSignIn">Log In</v-btn>
 
-    <button @click="handleSignInGoogle">Log In with Google</button>
+    <v-btn @click="handleSignInGoogle">Log In with Google</v-btn>
 
     <div>
       {{ auth?.user }}

@@ -7,9 +7,9 @@ import {
   getMetadata,
 } from "firebase/storage";
 import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db, storage } from "../../../firebase.config";
-
-const store = getStorage();
+import { storage } from "../../../firebase.config";
+/* 
+const store = getStorage(); */
 const listRef = ref(storage);
 /* getDocs() */
 

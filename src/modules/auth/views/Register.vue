@@ -69,10 +69,10 @@ async function handleSignUp() {
           @click:append-inner="show = !show"/> -->
       </form>
 
-    <button 
+    <v-btn 
     @click="handleSignUp">
     Sign Up
-  </button>
+  </v-btn>
   </main>
 </template>
 

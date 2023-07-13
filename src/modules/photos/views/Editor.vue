@@ -4,7 +4,7 @@
       <input type="file" id="file-input" @change="handleFileChange" />
       <canvas ref="canvas"></canvas>
 
-      <button @click="openInfos">Infos</button>
+      <v-btn @click="openInfos">Infos</v-btn>
     </div>
 
     <div style="width: 100%; display: inline-block">
