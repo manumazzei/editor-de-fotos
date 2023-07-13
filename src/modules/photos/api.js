@@ -19,6 +19,7 @@ const listRef = ref(storage);
 export async function createItem(payload, image) {
   const docRef = await addDoc(collection(db, "images"), payload);
 
+  console.log("Imagem aqui", image);
   const imageRef = ref(storage, `${docRef.id}`);
 
   uploadBytes(imageRef, image);

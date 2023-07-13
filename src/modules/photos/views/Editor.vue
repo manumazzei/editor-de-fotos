@@ -70,6 +70,7 @@ export default {
   methods: {
     handleFileChange(event) {
       const file = event.target.files[0];
+      this.imgRef = file
       const reader = new FileReader();
 
       reader.onload = (e) => {
