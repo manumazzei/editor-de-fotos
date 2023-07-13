@@ -43,10 +43,10 @@ export default {
       const contrast = (this.contrast + 100) / 100; // Escala de 0 a 2
 
       const brightnessFilter = new fabric.Image.filters.Brightness({
-        brightness: brightness,
+        brightness,
       });
       const contrastFilter = new fabric.Image.filters.Contrast({
-        contrast: contrast,
+        contrast,
       });
 
       this.fabricImage.filters = [brightnessFilter, contrastFilter];
