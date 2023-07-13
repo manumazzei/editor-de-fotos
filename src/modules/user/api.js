@@ -1,17 +1,14 @@
 import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db, storage } from "../../../../firebase.config";
+import { storage } from "../../../firebase.config";
 
 import {
-  getStorage,
   ref,
   listAll,
   getDownloadURL,
   getMetadata,
-  refFirebase,
-  uploadBytes,
 } from "firebase/storage";
 
-const storage = getStorage();
+/* const storage = getStorage(); */
 const listRef = ref(storage);
 
 // salvar um dado em images no firestore usando userId real de quem está logado e salvando uma url fixa(ex: 'teste')
@@ -41,14 +38,4 @@ export const listProjects = async () => {
   }
 };
 
-/* CRIA REGISTRO NO FIRESTORE E NO STORAGE */
 
-export async function createItem(payload, image) {
-  const docRef = await addDoc(collection(db, "items"), payload);
-
-  const imageRef = refFirebase(storage, `${docRef.id}/${image.name}`);
-
-  uploadBytes(imageRef, image);
-
-  return docRef;
-}
