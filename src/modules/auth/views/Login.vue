@@ -51,7 +51,7 @@ async function handleSignInGoogle() {
         <v-text-field
           required
           variant="underlined"
-          type="text"
+          type="password"
           v-model="password"
           label="Password"
         />

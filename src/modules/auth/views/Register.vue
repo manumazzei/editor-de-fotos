@@ -26,6 +26,11 @@ async function handleSignUp() {
 const confirmPassword = computed(() => {
   return password.value === passwordTest.value;
 });
+
+// const showPassword = () => {
+//   passwordType.value =
+//     passwordType.value === "password" ? "text" : "password";
+// };
 </script>
 
 <template>
@@ -50,17 +55,19 @@ const confirmPassword = computed(() => {
           required
           variant="underlined"
           label="Password"
-        
-        />
-
+          />
+          <!-- append-icon="mdi-eye"
+          @click:append="showPassword" -->
+          
         <v-text-field
           v-model="passwordTest"
           :type="passwordType"
           required
           variant="underlined"
           label="Confirm Password"
-          
         />
+        <!-- append-icon="mdi-eye"
+        @click:append="showPassword" -->
       </v-form>
       <v-divider class="my-6" />
       <v-btn
@@ -97,6 +104,7 @@ const confirmPassword = computed(() => {
 h1 {
   font-family: "Lobster Two", cursive;
   color: rgb(75, 121, 131);
+  font-size: 2.3rem;
 }
 .page {
   height: 100vh;
