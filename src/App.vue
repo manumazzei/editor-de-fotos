@@ -1,4 +1,5 @@
 <script setup>
+
 import { RouterLink, RouterView } from 'vue-router'
 import { onMounted } from "vue";
 import { useStore } from "./composables/useStore";
@@ -12,6 +13,7 @@ onMounted(() => {
       
     )
   );
+
 
   if (user) {
     auth.setUser(user);
@@ -37,3 +39,5 @@ onMounted(() => {
 <style scoped>
 
 </style>
+
+
