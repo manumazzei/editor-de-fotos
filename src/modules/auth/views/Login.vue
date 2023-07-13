@@ -14,10 +14,10 @@ const password = ref("");
 async function handleSignIn() {
   const result = await auth.signIn(email.value, password.value);
   if (!result) {
-    alert("email ou senha incorretos");
+    alert("Email ou senha incorretos");
     return;
   }
-  router.push("/about");
+  router.push("/dashboard");
 }
 
 async function handleSignInGoogle() {
@@ -25,10 +25,10 @@ async function handleSignInGoogle() {
   console.log(result);
 
   if (!result) {
-    alert("email ou senha incorretos");
+    alert("Erro, por favor tente mais tarde");
     return;
   }
-  router.push("/about");
+  router.push("/dashboard");
 }
 </script>
 
@@ -36,7 +36,7 @@ async function handleSignInGoogle() {
   <h1>LOGIN</h1>
   <main>
     <input type="email" v-model="email" />
-    <input type="password" v-model="password" />
+    <input type="text" v-model="password" />
     <button @click="handleSignIn">Log In</button>
 
     <button @click="handleSignInGoogle">Log In with Google</button>
@@ -49,10 +49,10 @@ async function handleSignInGoogle() {
 
 <style scoped>
 main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 </style>
