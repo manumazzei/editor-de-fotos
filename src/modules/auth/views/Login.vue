@@ -39,7 +39,7 @@ const showPassword = () => {
 
 <template>
   <div
-    class="page bg-grey-lighten-3 d-flex align-center justify-center flex-column"
+    class="page bg-grey-darken-4 d-flex align-center justify-center flex-column"
   >
     <h1>LOGIN</h1>
     <br />
@@ -114,7 +114,7 @@ const showPassword = () => {
 <style scoped>
 h1 {
   font-family: 'Kaushan Script', cursive;
-  color: rgb(75, 121, 131);
+  color: rgb(75, 129, 131);
   font-size: 2.2rem;
 
 }
