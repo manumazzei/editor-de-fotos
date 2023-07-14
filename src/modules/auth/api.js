@@ -4,21 +4,27 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
+
 
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
 export const signUp = async (email, password) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const user = userCredential.user;
     return user;
   } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(error);
-    };
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(error);
+  }
 };
 
 export const signIn = async (email, password) => {
@@ -41,5 +47,15 @@ export const signInGoogle = async () => {
     return user;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const logOut = async () => {
+  try {
+    signOut(auth).then(() => {
+      alert("Você saiu da sua conta")
+    })
+  } catch (error) {
+    console.log(error)
   }
 };
