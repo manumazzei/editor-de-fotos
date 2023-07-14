@@ -20,30 +20,43 @@ function logOut() {
   content.auth.logOut();
   router.push("/");
 }
+function createPost() {
+  router.push("/editor");
+}
 </script>
 
 <template>
   <v-sheet
-    class="page pt-10 bg-grey-lighten-3 d-flex flex-column justify-center align-center"
+    class="page pt-10 bg-grey-darken-4 d-flex flex-column justify-center align-center"
   >
-    <p class="text-teal-darken-3 text-h2">Feed</p>
+    <p class="title">Artfy Feed</p>
     <div class="btn d-flex justify-space-between">
-      <v-btn class="text-teal-darken-3 rounded-xl">Criar novo post</v-btn>
-      <v-btn class="text-teal-darken-3 rounded-xl" @click="logOut">Log Out</v-btn>
+      <v-btn
+        class="font text-teal-darken-3 rounded-xl"
+        color="grey-lighten-2"
+        @click="createPost"
+        >Criar novo post</v-btn
+      >
+      <v-btn
+        class="font text-teal-darken-3 rounded-xl"
+        color="grey-lighten-2"
+        @click="logOut"
+        >Log Out</v-btn
+      >
     </div>
-    <v-card width="80%" class="bg-grey-lighten-4 overflow-auto pr-2 mt-4">
+    <v-card width="80%" class="bg-transparent overflow-auto pr-2 mt-4">
       <v-list
         class="teste2 bg-transparent"
         v-for="data in listStore.data"
         :key="data"
       >
         <v-card
-          class="mb-4 d-flex flex-row-reverse"
+          class="mb-4 bg-grey-lighten-2 d-flex flex-row-reverse"
           elevation="12"
           rounded="xl"
         >
           <div
-            class="w35 d-flex flex-column justify-center align-start text-grey-darken-3 text-subtitle-1 my-4"
+            class="w35 d-flex flex-column justify-center align-start text-grey-darken-3 my-4"
           >
             <v-list-item>Nome: {{ data.nome }}</v-list-item>
             <v-list-item>Fotográfo: {{ data.fotografo }}</v-list-item>
@@ -80,8 +93,17 @@ function logOut() {
   max-width: 100vw;
   max-height: 100vh;
 }
+.title {
+  font-family: "Bad Script", cursive;
+  font-size: 5rem;
+  color: rgb(75, 129, 131);
+}
 .btn {
   width: 80vw;
+}
+.font {
+  font-family: "Manrope", sans-serif;
+  font-size: 1rem;
 }
 ::-webkit-scrollbar {
   width: 10px;
@@ -94,6 +116,8 @@ function logOut() {
 }
 .w35 {
   width: 35%;
+  font-family: "Manrope", sans-serif;
+  font-size: 1.3rem;
 }
 .w100 {
   width: 100%;
@@ -101,4 +125,4 @@ function logOut() {
 .photo {
   width: 750px;
 }
-</style>
+</style>  
