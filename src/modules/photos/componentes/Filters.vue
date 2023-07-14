@@ -22,14 +22,15 @@
         :step="filterStep"
       />
     </div>
-    <button @click="applyFilter">Aplicar Filtro</button>
-    <button @click="resetFilter">Redefinir Filtro</button>
-    <button @click="$emit('close')">Cancelar</button>
+    <v-btn @click="applyFilter">Aplicar Filtro</v-btn>
+    <v-btn @click="resetFilter">Redefinir Filtro</v-btn>
+    <v-btn @click="$emit('close')">Cancelar</v-btn>
   </div>
 </template>
 
 <script>
 export default {
+  props: ["foto"],
   emits: ["close"],
   data() {
     return {
@@ -37,40 +38,6 @@ export default {
       selectedFilter: false,
     };
   },
-  methods: {
-    applyFilter() {
-      if (this.image) {
-        this.image.filters = [];
-
-        if (this.selectedFilter == "None") return this.canvas.renderAll();
-
-        let filterData = undefined;
-        if (this.selectedFilter == "Brightness") {
-          filterData = {
-            brightness: this.filterValue / 100,
-          };
-        } else if (this.selectedFilter == "Contrast") {
-          filterData = {
-            contrast: this.filterValue / 100,
-          };
-        }
-
-        this.image.filters.push(
-          new fabric.Image.filters[this.selectedFilter](filterData)
-        );
-        this.applyFilters();
-      }
-    },
-
-    resetFilter() {
-      if (this.image) {
-        this.image.filters = [];
-        reader.readAsDataURL(file);
-
-        this.selectedFilter = "none";
-        this.filterValue = 0;
-      }
-    },
-  },
+  methods: {},
 };
 </script>
