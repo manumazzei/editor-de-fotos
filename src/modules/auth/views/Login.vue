@@ -10,6 +10,7 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
+const passwordType = ref("password");
 
 async function handleSignIn() {
   const result = await auth.signIn(email.value, password.value);
@@ -30,6 +31,10 @@ async function handleSignInGoogle() {
   }
   router.push("/dashboard");
 }
+const showPassword = () => {
+  passwordType.value =
+    passwordType.value === "password" ? "text" : "password";
+};
 </script>
 
 <template>
@@ -51,9 +56,11 @@ async function handleSignInGoogle() {
         <v-text-field
           required
           variant="underlined"
-          type="password"
+          :type="passwordType"
           v-model="password"
-          label="Password"
+          label="Email"
+          append-inner-icon="mdi-eye"
+          @click:append-inner="showPassword"
         />
       </v-form>
 
@@ -106,8 +113,10 @@ async function handleSignInGoogle() {
 
 <style scoped>
 h1 {
-  font-family: "Lobster Two", cursive;
+  font-family: 'Kaushan Script', cursive;
   color: rgb(75, 121, 131);
+  font-size: 2.2rem;
+
 }
 .page {
   height: 100vh;

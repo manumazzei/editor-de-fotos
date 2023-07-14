@@ -11,7 +11,7 @@ const router = useRouter();
 const email = ref("");
 const password = ref("");
 
-const passwordTest = ref("");
+const passwordConfirmation = ref("");
 const passwordType = ref("password");
 
 async function handleSignUp() {
@@ -23,14 +23,14 @@ async function handleSignUp() {
   router.push("/login");
 }
 
-const confirmPassword = computed(() => {
-  return password.value === passwordTest.value;
+const isPasswordConfirmed = computed(() => {
+  return password.value === passwordConfirmation.value;
 });
 
-// const showPassword = () => {
-//   passwordType.value =
-//     passwordType.value === "password" ? "text" : "password";
-// };
+const showPassword = () => {
+  passwordType.value =
+    passwordType.value === "password" ? "text" : "password";
+};
 </script>
 
 <template>
@@ -54,20 +54,20 @@ const confirmPassword = computed(() => {
           :type="passwordType"
           required
           variant="underlined"
-          label="Password"
+          label="Senha"
+          append-inner-icon="mdi-eye"
+          @click:append-inner="showPassword"
           />
-          <!-- append-icon="mdi-eye"
-          @click:append="showPassword" -->
           
         <v-text-field
-          v-model="passwordTest"
+          v-model="passwordConfirmation"
           :type="passwordType"
           required
           variant="underlined"
-          label="Confirm Password"
+          label="Confirme Senha"
+          append-inner-icon="mdi-eye"
+          @click:append-inner="showPassword"
         />
-        <!-- append-icon="mdi-eye"
-        @click:append="showPassword" -->
       </v-form>
       <v-divider class="my-6" />
       <v-btn
@@ -80,7 +80,7 @@ const confirmPassword = computed(() => {
         elevation="4"
         height="60px"
         @click="handleSignUp"
-        :disabled="!confirmPassword"
+        :disabled="!isPasswordConfirmed"
       >
         Sign Up
       </v-btn>
@@ -102,9 +102,9 @@ const confirmPassword = computed(() => {
 
 <style scoped>
 h1 {
-  font-family: "Lobster Two", cursive;
+font-family: 'Kaushan Script', cursive;
   color: rgb(75, 121, 131);
-  font-size: 2.3rem;
+  font-size: 2.2rem;
 }
 .page {
   height: 100vh;

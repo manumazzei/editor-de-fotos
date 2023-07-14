@@ -1,6 +1,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { listStore } from "../store";
+import { useRouter } from "vue-router";
+import { useStore } from "@/composables/useStore";
+
+const { content } = useStore();
+
+const router = useRouter();
 
 const files = ref([]);
 
@@ -9,28 +15,12 @@ onMounted(async () => {
   await listStore.infoImg();
   files.value = listStore.data;
 });
-</script>
 
-<!-- <script>
-import { listStore } from "../store";
-export default {
-  data() {
-    return {
-      files: [],
-    };
-  },
-  mounted() {
-    this.listStore.listProjects();
-    this.listStore.infoImg();
-  },
-  methods: {},
-  setup() {
-    return {
-      listStore,
-    };
-  },
-};
-</script> -->
+function logOut() {
+  content.auth.logOut();
+  router.push("/");
+}
+</script>
 
 <template>
   <v-sheet
@@ -39,7 +29,7 @@ export default {
     <p class="text-teal-darken-3 text-h2">Feed</p>
     <div class="btn d-flex justify-space-between">
       <v-btn class="text-teal-darken-3 rounded-xl">Criar novo post</v-btn>
-      <v-btn class="text-teal-darken-3 rounded-xl">Log Out</v-btn>
+      <v-btn class="text-teal-darken-3 rounded-xl" @click="logOut">Log Out</v-btn>
     </div>
     <v-card width="80%" class="bg-grey-lighten-4 overflow-auto pr-2 mt-4">
       <v-list
