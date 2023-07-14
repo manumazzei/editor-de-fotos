@@ -15,6 +15,7 @@ const vuetify = createVuetify({
   directives,
 })
 import "@/modules/auth";
+import "@/modules/user";
 
 const app = createApp(App)
 
