@@ -16,6 +16,10 @@ onMounted(async () => {
   files.value = listStore.data;
 });
 
+function startEdit() {
+  router.push("/editor");
+}
+
 function logOut() {
   content.auth.logOut();
   router.push("/");
@@ -28,7 +32,7 @@ function logOut() {
   >
     <p class="text-teal-darken-3 text-h2">Feed</p>
     <div class="btn d-flex justify-space-between">
-      <v-btn class="text-teal-darken-3 rounded-xl">Criar novo post</v-btn>
+      <v-btn class="text-teal-darken-3 rounded-xl" @click="startEdit">Criar novo post</v-btn>
       <v-btn class="text-teal-darken-3 rounded-xl" @click="logOut">Log Out</v-btn>
     </div>
     <v-card width="80%" class="bg-grey-lighten-4 overflow-auto pr-2 mt-4">
