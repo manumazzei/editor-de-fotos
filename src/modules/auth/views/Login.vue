@@ -71,7 +71,7 @@ const showPassword = () => {
           label="Password"
         />
       </v-form>
->>>>>>>>> Temporary merge branch 2
+
 
       <div class="d-flex flex-column mx-16 mt-4">
         <v-btn
