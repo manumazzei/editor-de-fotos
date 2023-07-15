@@ -20,6 +20,7 @@ const vuetify = createVuetify({
   }
 })
 import "@/modules/auth";
+import "@/modules/user";
 import "@/modules/photos";
 
 const app = createApp(App);
