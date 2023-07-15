@@ -38,15 +38,40 @@ const showPassword = () => {
 </script>
 
 <template>
+
   <h1>LOGIN</h1>
   <main>
     <input type="email" v-model="email" />
     <input type="text" v-model="password" />
-    <button @click="handleSignIn">Log In</button>
-  </main>
+    <v-btn @click="handleSignIn">Log In</v-btn>
 
-    
-  <button @click="handleSignInGoogle">Log In with Google</button>
+    <v-btn @click="handleSignInGoogle">Log In with Google</v-btn>
+    </main>
+=========
+  <div
+    class="page bg-grey-lighten-3 d-flex align-center justify-center flex-column"
+  >
+    <h1>LOGIN</h1>
+    <br />
+    <v-card class="card bg-grey-lighten-4 px-16" rounded="xl" elevation="16">
+      <v-form class="mt-8 mx-4">
+        <v-text-field
+          required
+          variant="underlined"
+          type="email"
+          v-model="email"
+          label="Email"
+        />
+
+        <v-text-field
+          required
+          variant="underlined"
+          type="password"
+          v-model="password"
+          label="Password"
+        />
+      </v-form>
+>>>>>>>>> Temporary merge branch 2
 
       <div class="d-flex flex-column mx-16 mt-4">
         <v-btn

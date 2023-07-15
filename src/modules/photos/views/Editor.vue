@@ -69,7 +69,6 @@ export default {
       medidas: "",
       fotografo: "",
       imgRef: null,
-    
       showBrilho: false,
       showResize: false,
       showFiltros: false,
