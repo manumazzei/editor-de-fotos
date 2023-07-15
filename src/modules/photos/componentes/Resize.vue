@@ -19,15 +19,26 @@
 
 <script>
 export default {
-  emits: ["close"],
-  props: ["foto"],
+  props: ["image"],
+  emits: ["close", "filter", "reset"],
   data() {
     return {
-      showResize: false,
       newWidth: 0,
       newHeight: 0,
     };
   },
-  methods: {},
+  methods: {
+    resizeImage() {
+      if (this.image && this.newWidth > 0 && this.newHeight > 0) {
+        this.image.scaleToWidth(this.newWidth);
+        this.image.scaleToHeight(this.newHeight);
+      } else if (this.image && this.newWidth > 0) {
+        this.image.scaleToWidth(this.newWidth);
+      } else if (this.image && this.newHeight > 0) {
+        this.image.scaleToHeight(this.newHeight);
+      }
+      this.$emit("filter", [this.newHeight, this.newWidth]);
+    },
+  },
 };
 </script>

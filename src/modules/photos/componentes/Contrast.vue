@@ -18,8 +18,8 @@
       max="100"
       step="1"
     />
-    <button @click="brilhoEcontraste">Aplicar</button>
-    <button @click="reset">Redefinir</button>
+    <v-btn @click="brilhoEcontraste">Aplicar</v-btn>
+    <v-btn @click="reset">Redefinir</v-btn>
     <v-btn @click="$emit('close')">Cancelar</v-btn>
   </div>
 </template>
@@ -27,12 +27,11 @@
 <script>
 export default {
   props: ["image"],
-  emits: ["close", "filter", "reset"], 
+  emits: ["close", "filter", "reset"],
   data() {
     return {
       contrast: 0,
       brightness: 0,
-      showBrilho: false,
     };
   },
   methods: {
@@ -46,7 +45,12 @@ export default {
       const contrastFilter = new fabric.Image.filters.Contrast({
         contrast: contrast,
       });
-      this.image.filters.push(new fabric.Image.filters.Brightness({ brightness: brightness, contrast: contrast }));
+      this.image.filters.push(
+        new fabric.Image.filters.Brightness({
+          brightness: brightness,
+          contrast: contrast,
+        })
+      );
       this.$emit("filter", [brightnessFilter, contrastFilter]);
     },
     reset() {
