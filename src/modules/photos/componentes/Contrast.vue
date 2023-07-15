@@ -1,12 +1,9 @@
 <template>
-  <v-btn @click="startBrilho">Brilho e Contraste</v-btn>
-
-  <div v-if="showBrilho">
+  <div>
     <label for="brightness">Brilho:</label>
     <input
       type="range"
       id="brightness"
-      v-model="brightness"
       min="-100"
       max="100"
       step="1"
@@ -15,38 +12,35 @@
     <input
       type="range"
       id="contrast"
-      v-model="contrast"
       min="-100"
       max="100"
       step="1"
     />
-    <v-btn @click="applyFilters">Aplicar Filtros</v-btn>
-    <v-btn @click="resetFilters">Redefinir Filtros</v-btn>
-    <v-btn @click="showBrilho = false">Cancelar</v-btn>
+    <button @click="applyFilters">Aplicar Filtros</button>
+    <button @click="resetFilters">Redefinir Filtros</button>
+    <button @click="$emit('close')">Cancelar</button>
   </div>
 </template>
 
 <script>
 export default {
+  emits: ["close"],
   data() {
     return {
       showBrilho: false,
     };
   },
   methods: {
-    startBrilho() {
-      this.showBrilho = true;
-    },
     applyFilters() {
       if (!this.fabricImage) return;
       const brightness = this.brightness / 100; // Escala de -1 a 1
       const contrast = (this.contrast + 100) / 100; // Escala de 0 a 2
 
       const brightnessFilter = new fabric.Image.filters.Brightness({
-        brightness: brightness,
+        brightness,
       });
       const contrastFilter = new fabric.Image.filters.Contrast({
-        contrast: contrast,
+        contrast,
       });
 
       this.fabricImage.filters = [brightnessFilter, contrastFilter];

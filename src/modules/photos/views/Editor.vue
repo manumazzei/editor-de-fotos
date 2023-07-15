@@ -7,11 +7,18 @@
       <v-btn @click="openInfos">Infos</v-btn>
     </div>
 
-    <div style="width: 100%; display: inline-block">
-      <Cut />
-      <Contrast />
-      <Resize />
-      <Filters />
+    <div>
+      <button @click="showCropArea = true">Recortar</button>
+      <Cut v-if="showCropArea" @close="showCropArea = false" />
+
+      <button @click="showBrilho = true">Brilho e Contraste</button>
+      <Contrast v-if="showBrilho" @close="showBrilho = false" />
+
+      <button @click="showResize = true">Redimensionar</button>
+      <Resize v-if="showResize" @close="showResize = false" />
+
+      <button @click="showFiltros = true">Filtros</button>
+      <Filters v-if="showFiltros" @close="showFiltros = false" />
     </div>
   </div>
 
@@ -62,6 +69,11 @@ export default {
       medidas: "",
       fotografo: "",
       imgRef: null,
+    
+      showBrilho: false,
+      showResize: false,
+      showFiltros: false,
+      showCropArea: false,
     };
   },
   mounted() {

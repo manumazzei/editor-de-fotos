@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/composables/useStore";
 
@@ -10,24 +10,9 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
-const passwordtest = "";
 
-
-const show = false;
-const required = true;
-const form = false;
-
-function passwordRules(input) {
-  let regexSpecial = /\W|_/;
-  let regexNumber = /(\d+)| /g;
-  if (input.includes(" ")) return "No spaces";
-  if ((input.length < 8, !regexSpecial.test(input), !regexNumber.test(input)))
-    return "At least 8 characters, 1 special character and 1 number";
-  return true;
-}
-function confirmPassword(passwordtest) {
-  return passwordtest !== this.password ? "Passwords don't match" : true;
-}
+const passwordConfirmation = ref("");
+const passwordType = ref("password");
 
 async function handleSignUp() {
   const result = await auth.signUp(email.value, password.value);
@@ -37,49 +22,95 @@ async function handleSignUp() {
   }
   router.push("/login");
 }
+
+const isPasswordConfirmed = computed(() => {
+  return password.value === passwordConfirmation.value;
+});
+
+const showPassword = () => {
+  passwordType.value =
+    passwordType.value === "password" ? "text" : "password";
+};
 </script>
 
 <template>
-  <h1>REGISTER</h1>
-  <main>
-    <form>
+  <div
+    class="page bg-grey-lighten-3 d-flex align-center justify-center flex-column"
+  >
+    <h1>CADASTRO</h1>
+    <br />
+    <v-card class="card bg-grey-lighten-4 px-16" rounded="xl" elevation="16">
+      <v-form class="mt-8">
+        <v-text-field
+          required
+          variant="underlined"
+          type="email"
+          v-model="email"
+          label="Email"
+        />
 
-      <input 
-      required 
-      type="email" 
-      v-model="email" 
-      placeholder="Email" />
-
-      <input
-        v-model="password"
-        required
-        placeholder="Password"
-      />
-      <!-- :type="show ? 'text' : 'password'"
-        :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-        @click:append-inner="show = !show" /> -->
-
-      <input
-        v-model="passwordtest"
-        required
-        placeholder="Confirm Password"
-      />
-      <!-- :type="show ? 'text' : 'password'"
-          :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append-inner="show = !show"/> -->
-      </form>
-
-    <v-btn 
-    @click="handleSignUp">
-    Sign Up
-  </v-btn>
-  </main>
+        <v-text-field
+          v-model="password"
+          :type="passwordType"
+          required
+          variant="underlined"
+          label="Senha"
+          append-inner-icon="mdi-eye"
+          @click:append-inner="showPassword"
+          />
+          
+        <v-text-field
+          v-model="passwordConfirmation"
+          :type="passwordType"
+          required
+          variant="underlined"
+          label="Confirme Senha"
+          append-inner-icon="mdi-eye"
+          @click:append-inner="showPassword"
+        />
+      </v-form>
+      <v-divider class="my-6" />
+      <v-btn
+        block
+        color="teal-darken-2"
+        size="large"
+        type="submit"
+        variant="elevated"
+        class="rounded-xl font-weight-bold text-white text-h7"
+        elevation="4"
+        height="60px"
+        @click="handleSignUp"
+        :disabled="!isPasswordConfirmed"
+      >
+        Sign Up
+      </v-btn>
+      <v-divider class="my-6" />
+      <v-card-actions
+        class="text-body-1 d-flex flex-column align-center justify-center"
+      >
+        <p class="text-grey-darken-3">Já possui cadastro?</p>
+        <router-link
+          to="./login"
+          class="text-teal-darken-1 text-decoration-none"
+        >
+          Log In
+        </router-link>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
 <style scoped>
-main {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+h1 {
+font-family: 'Kaushan Script', cursive;
+  color: rgb(75, 121, 131);
+  font-size: 2.2rem;
+}
+.page {
+  height: 100vh;
+}
+.card {
+  width: 700px;
+  height: 50%;
 }
 </style>
