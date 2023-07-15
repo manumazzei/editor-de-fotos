@@ -38,6 +38,16 @@ const showPassword = () => {
 </script>
 
 <template>
+
+  <h1>LOGIN</h1>
+  <main>
+    <input type="email" v-model="email" />
+    <input type="text" v-model="password" />
+    <v-btn @click="handleSignIn">Log In</v-btn>
+
+    <v-btn @click="handleSignInGoogle">Log In with Google</v-btn>
+    </main>
+=========
   <div
     class="page bg-grey-lighten-3 d-flex align-center justify-center flex-column"
   >
@@ -56,13 +66,12 @@ const showPassword = () => {
         <v-text-field
           required
           variant="underlined"
-          :type="passwordType"
+          type="password"
           v-model="password"
-          label="Email"
-          append-inner-icon="mdi-eye"
-          @click:append-inner="showPassword"
+          label="Password"
         />
       </v-form>
+>>>>>>>>> Temporary merge branch 2
 
       <div class="d-flex flex-column mx-16 mt-4">
         <v-btn

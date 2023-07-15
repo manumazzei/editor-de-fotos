@@ -10,9 +10,29 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
+const passwordtest = "";
+
+
+const show = false;
+const required = true;
+const form = false;
+
+function passwordRules(input) {
+  let regexSpecial = /\W|_/;
+  let regexNumber = /(\d+)| /g;
+  if (input.includes(" ")) return "No spaces";
+  if ((input.length < 8, !regexSpecial.test(input), !regexNumber.test(input)))
+    return "At least 8 characters, 1 special character and 1 number";
+  return true;
+}
+function confirmPassword(passwordtest) {
+  return passwordtest !== this.password ? "Passwords don't match" : true;
+}
+
 
 const passwordConfirmation = ref("");
 const passwordType = ref("password");
+
 
 async function handleSignUp() {
   const result = await auth.signUp(email.value, password.value);
