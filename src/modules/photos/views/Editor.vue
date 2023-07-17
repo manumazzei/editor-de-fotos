@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <h2 @click="showBrilho = true">Brilho</h2>
     <Contrast
       v-if="showBrilho"
@@ -9,6 +10,7 @@
       @close="showBrilho = false"
     />
   </div>
+
 
   <h2 @click="showResize = true">Redimensionar</h2>
   <Resize
@@ -36,8 +38,32 @@
     @close="showSpin = false"
   />
 
+
   <input type="file" @change="handleFileSelect" />
   <canvas ref="canvas"></canvas>
+
+      <button @click="showFiltros = true">Filtros</button>
+      <Filters v-if="showFiltros" @close="showFiltros = false" />
+    </div>
+  </div>
+
+  <div v-if="showInfos">
+    <div>
+      <h2>Novo Post</h2>
+    </div>
+    <form @submit.prevent>
+      <input v-model="nome" placeholder="Nome da foto" />
+      <input v-model="dataEdicao" type="date" placeholder="Data Edição" />
+      <input v-model="descricao" placeholder="Descrição" />
+
+      <input v-model="medidas" placeholder="Altura x largura" />
+      <input v-model="fotografo" placeholder="Nome do fotográfo" />
+
+      <button @click="handleSave" variant="tonal">Salvar</button>
+      <button @click="showInfos = false ">Cancelar</button>
+    </form>
+  </div>
+
 </template>
 
 <script>
@@ -46,6 +72,10 @@ import Spin from "../componentes/Spin.vue";
 import Contrast from "../componentes/Contrast.vue";
 import Resize from "../componentes/Resize.vue";
 import Filters from "../componentes/Filters.vue";
+import { useRouter } from "vue-router";
+import { useStore } from "@/composables/useStore";
+
+const { content } = useStore();
 
 export default {
   name: "PhotoEditor",
@@ -57,7 +87,17 @@ export default {
   },
   data() {
     return {
+
       showSpin: false,
+
+      showInfos: false,
+      nome: "",
+      dataEdicao: "",
+      descricao: "",
+      medidas: "",
+      fotografo: "",
+      imgRef: null,
+
       showBrilho: false,
       showResize: false,
       showFiltros: false,
@@ -72,6 +112,7 @@ export default {
   methods: {
     handleFileSelect(event) {
       const file = event.target.files[0];
+      this.imgRef = file
       const reader = new FileReader();
 
       reader.onload = (e) => {
@@ -87,6 +128,15 @@ export default {
 
       reader.readAsDataURL(file);
     },
+    handleSave() {
+      const payload = {
+        nome: this.nome.valueOf(),
+        dataEdicao: this.dataEdicao.valueOf(),
+        descricao: this.descricao.valueOf(),
+        medidas: this.medidas.valueOf(),
+        fotografo: this.fotografo.valueOf(),
+      };
+
 
     applyFilters() {
       this.image.applyFilters();
@@ -99,6 +149,20 @@ export default {
         this.image.applyFilters();
         this.canvas.requestRenderAll();
       }
+
+      const imgPayload = this.imgRef;
+      const res = content.photo.createItem(payload, imgPayload);
+
+      if (res) {
+        alert("criado com sucesso!");
+      }
+    },
+    handleInfos(event) {
+      this.imgRef = event.target.files[0];
+    },
+    openInfos() {
+      this.showInfos = true;
+
     },
   },
 };
