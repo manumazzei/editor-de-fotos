@@ -7,7 +7,7 @@ export const routes = [
     name: "/dashboard",
     component: () => import("../views/Dashboard.vue"),
     meta: {
-      requireAuth: true,
+      requiresAuth: true,
     },
   },
 ];
