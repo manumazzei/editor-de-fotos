@@ -46,7 +46,7 @@ function createPost() {
           @click="createPost"
           >Criar novo post</v-btn
         >
-        <h1 class="title">Artfy Feed</h1>
+        <h1 class="title py-2">Artfy Feed</h1>
         <v-btn
           class="font text-teal-darken-3 rounded-xl"
           color="grey-lighten-2"
@@ -108,7 +108,7 @@ function createPost() {
 }
 .title {
   font-family: "Bad Script", cursive;
-  font-size: 5rem;
+  font-size: 3rem;
   color: rgb(102, 184, 187);
 }
 header {
