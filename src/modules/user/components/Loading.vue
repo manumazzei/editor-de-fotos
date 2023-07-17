@@ -1,8 +1,9 @@
 <template>
   <modal class="loading-container w-100 h-100">
     <v-progress-circular 
-    :size="55" 
-    color="pink-lighten-1" 
+    :size="65" 
+    :width="7"
+    color="teal-lighten-3" 
     indeterminate>
     </v-progress-circular>
   </modal>
@@ -11,7 +12,8 @@
 <style>
 .loading-container {
   position: fixed;
-  top: 0;
+  background-color: rgb(39, 38, 38);
+  top: 10vh;
   left: 0;
   width: 100%;
   height: 100%;

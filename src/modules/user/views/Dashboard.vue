@@ -3,14 +3,14 @@ import { ref, onMounted } from "vue";
 import { listStore } from "../store";
 import { useRouter } from "vue-router";
 import { useStore } from "@/composables/useStore";
-import { Loader } from "../components/loader.vue";
+import Loading from "../components/Loading.vue";
 
 const { content } = useStore();
 
 const router = useRouter();
 
 const files = ref([]);
-const loading = ref (true);
+const loading = ref(true);
 
 onMounted(async () => {
   try {
@@ -34,9 +34,7 @@ function createPost() {
 </script>
 
 <template>
-  <div v-if="loading" class="loading-container">
-    <Loader></Loader>
-  </div>
+<Loading v-if="loading"></Loading>
   <v-sheet
     class="page bg-grey-darken-4 d-flex flex-column justify-center align-center"
   >
@@ -57,7 +55,7 @@ function createPost() {
         >
       </div>
     </header>
-    <v-card width="60%" class="bg-transparent overflow-auto pr-2">
+    <v-card width="60%" class="bg-transparent overflow-auto pr-2 mt-4">
       <v-list
         class="teste2 bg-transparent"
         v-for="data in listStore.data"
@@ -82,20 +80,19 @@ function createPost() {
             <v-list-item class="text-subtitle-1"
               >Data da edição: {{ data.dataEdicao }}</v-list-item
             >
-            <!-- <v-list-item>id: {{ data.id }}</v-list-item> -->
           </div>
           <div class="w100 bg-transparent">
             <div
-              class="w100 bg-transparent"
-              v-for="photo in listStore.photos"
-              :key="photo"
+            class="w100 bg-transparent"
+            v-for="photo in listStore.photos"
+            :key="photo"
             >
-              <v-list-item
-                class="ma-8 pa-0 bg-transparent d-flex justify-center align-center"
-                v-if="photo.name === data.id"
-              >
-                <img class="photo" :src="photo.url" />
-              </v-list-item>
+            <v-list-item
+            class="ma-8 pa-0 bg-transparent d-flex justify-center align-center"
+            v-if="photo.name === data.id"
+            >
+            <img class="photo" :src="photo.url" />
+          </v-list-item>
             </div>
           </div>
         </v-card>
