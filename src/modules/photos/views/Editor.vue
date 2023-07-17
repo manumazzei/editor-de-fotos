@@ -1,21 +1,46 @@
 <template>
   <div>
-    <div style="display: flex; justify-content: center; align-items: center">
-      <input type="file" id="file-input" @change="handleFileChange" />
-      <canvas ref="canvas"></canvas>
 
-      <v-btn @click="openInfos">Infos</v-btn>
-    </div>
+    <h2 @click="showBrilho = true">Brilho</h2>
+    <Contrast
+      v-if="showBrilho"
+      :image="image"
+      @filter="applyFilters"
+      @reset="resetFilters"
+      @close="showBrilho = false"
+    />
+  </div>
 
-    <div>
-      <button @click="showCropArea = true">Recortar</button>
-      <Cut v-if="showCropArea" @close="showCropArea = false" />
 
-      <button @click="showBrilho = true">Brilho e Contraste</button>
-      <Contrast v-if="showBrilho" @close="showBrilho = false" />
+  <h2 @click="showResize = true">Redimensionar</h2>
+  <Resize
+    v-if="showResize"
+    :image="image"
+    @filter="applyFilters"
+    @close="showResize = false"
+  />
 
-      <button @click="showResize = true">Redimensionar</button>
-      <Resize v-if="showResize" @close="showResize = false" />
+  <h2 @click="showFiltros = true">Filtros</h2>
+  <Filters
+    v-if="showFiltros"
+    :image="image"
+    @filter="applyFilters"
+    @reset="resetFilters"
+    @close="showFiltros = false"
+  />
+
+  <h2 @click="showSpin = true">Girar e inverter</h2>
+  <Spin
+    v-if="showSpin"
+    :image="image"
+    @filter="applyFilters"
+    @event="applyFilters"
+    @close="showSpin = false"
+  />
+
+
+  <input type="file" @change="handleFileSelect" />
+  <canvas ref="canvas"></canvas>
 
       <button @click="showFiltros = true">Filtros</button>
       <Filters v-if="showFiltros" @close="showFiltros = false" />
@@ -38,12 +63,12 @@
       <button @click="showInfos = false ">Cancelar</button>
     </form>
   </div>
+
 </template>
 
 <script>
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-import { photoStore } from "../store";
-import Cut from "../componentes/Cut.vue";
+import Spin from "../componentes/Spin.vue";
 import Contrast from "../componentes/Contrast.vue";
 import Resize from "../componentes/Resize.vue";
 import Filters from "../componentes/Filters.vue";
@@ -55,13 +80,16 @@ const { content } = useStore();
 export default {
   name: "PhotoEditor",
   components: {
-    Cut,
+    Spin,
     Contrast,
     Resize,
     Filters,
   },
   data() {
     return {
+
+      showSpin: false,
+
       showInfos: false,
       nome: "",
       dataEdicao: "",
@@ -69,28 +97,32 @@ export default {
       medidas: "",
       fotografo: "",
       imgRef: null,
+
       showBrilho: false,
       showResize: false,
       showFiltros: false,
-      showCropArea: false,
+      image: null,
+      canvas: null,
     };
   },
   mounted() {
-    this.canvas = new fabric.Canvas(this.$refs.canvas);
+    this.canvas = this.$refs.canvas;
+    this.fabricCanvas = new fabric.Canvas(this.canvas);
   },
   methods: {
-    handleFileChange(event) {
+    handleFileSelect(event) {
       const file = event.target.files[0];
       this.imgRef = file
       const reader = new FileReader();
 
       reader.onload = (e) => {
-        this.canvas.clear();
         const dataURL = e.target.result;
 
         fabric.Image.fromURL(dataURL, (img) => {
-          this.fabricImage = img;
-          this.canvas.add(this.fabricImage);
+          this.image = img;
+
+          this.canvas = new fabric.Canvas(this.$refs.canvas);
+          this.canvas.add(this.image);
         });
       };
 
@@ -105,6 +137,19 @@ export default {
         fotografo: this.fotografo.valueOf(),
       };
 
+
+    applyFilters() {
+      this.image.applyFilters();
+      this.canvas.renderAll();
+    },
+
+    resetFilters() {
+      if (this.image) {
+        this.image.filters = [];
+        this.image.applyFilters();
+        this.canvas.requestRenderAll();
+      }
+
       const imgPayload = this.imgRef;
       const res = content.photo.createItem(payload, imgPayload);
 
@@ -117,23 +162,8 @@ export default {
     },
     openInfos() {
       this.showInfos = true;
+
     },
-  },
-  setup() {
-    return {
-      photoStore,
-    };
   },
 };
 </script>
-
-<style scoped>
-canvas {
-  border: 2px solid black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  height: 80%;
-}
-</style>

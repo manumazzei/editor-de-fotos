@@ -4,6 +4,7 @@
     <input
       type="range"
       id="brightness"
+      v-model="brightness"
       min="-100"
       max="100"
       step="1"
@@ -12,68 +13,51 @@
     <input
       type="range"
       id="contrast"
+      v-model="contrast"
       min="-100"
       max="100"
       step="1"
     />
-    <button @click="applyFilters">Aplicar Filtros</button>
-    <button @click="resetFilters">Redefinir Filtros</button>
-    <button @click="$emit('close')">Cancelar</button>
+    <v-btn @click="brilhoEcontraste">Aplicar</v-btn>
+    <v-btn @click="reset">Redefinir</v-btn>
+    <v-btn @click="$emit('close')">Cancelar</v-btn>
   </div>
 </template>
 
 <script>
 export default {
-  emits: ["close"],
+  props: ["image"],
+  emits: ["close", "filter", "reset"],
   data() {
     return {
-      showBrilho: false,
+      contrast: 0,
+      brightness: 0,
     };
   },
   methods: {
-    applyFilters() {
-      if (!this.fabricImage) return;
-      const brightness = this.brightness / 100; // Escala de -1 a 1
-      const contrast = (this.contrast + 100) / 100; // Escala de 0 a 2
+    brilhoEcontraste() {
+      const brightness = this.brightness / 200; // escala de -0,5 a 0,5
+      const contrast = (this.contrast + 100) / 100; // escala de 0 a 2
 
       const brightnessFilter = new fabric.Image.filters.Brightness({
-        brightness,
+        brightness: brightness,
       });
       const contrastFilter = new fabric.Image.filters.Contrast({
-        contrast,
+        contrast: contrast,
       });
-
-      this.fabricImage.filters = [brightnessFilter, contrastFilter];
-      this.fabricImage.applyFilters();
-      reader.readAsDataURL(file);
+      this.image.filters.push(
+        new fabric.Image.filters.Brightness({
+          brightness: brightness,
+          contrast: contrast,
+        })
+      );
+      this.$emit("filter", [brightnessFilter, contrastFilter]);
     },
-    uploadFile() {
-      const file = document.querySelector("#file-input").files[0];
-      this.photoStore.upload(file.name, file); // se quiser trocar, revisar esta linha
+    reset() {
+      this.brightness = 0;
+      this.contrast = 0;
+      this.$emit("reset");
     },
-    handleFileChange(event) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        this.canvas.clear();
-        const dataURL = e.target.result;
-
-        fabric.Image.fromURL(dataURL, (img) => {
-          this.fabricImage = img;
-          this.canvas.add(this.fabricImage);
-        });
-      };
-
-      reader.readAsDataURL(file);
-    },
-  },
-  resetFilters() {
-    if (this.fabricImage) {
-      this.fabricImage.filters = [];
-      this.fabricImage.applyFilters();
-      reader.readAsDataURL(file);
-    }
   },
 };
 </script>

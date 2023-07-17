@@ -2,12 +2,11 @@
   <div>
     <label for="filter">Filtro:</label>
     <select id="filter" v-model="selectedFilter">
-      <option value="None">Nenhum</option>
-      <option value="Grayscale">Tons de Cinza</option>
-      <option value="Sepia">Sépia</option>
-      <option value="Invert">Inverter Cores</option>
-      <option value="Brightness">Brilho</option>
-      <option value="Contrast">Contraste</option>
+      <option value="none">Nenhum</option>
+      <option value="grayscale">Tons de Cinza</option>
+      <option value="sepia">Sépia</option>
+      <option value="noise">Ruido</option>
+      <option value="pixelate">Pixel</option>
     </select>
     <div
       v-if="selectedFilter === 'brightness' || selectedFilter === 'contrast'"
@@ -22,54 +21,52 @@
         :step="filterStep"
       />
     </div>
-    <button @click="applyFilter">Aplicar Filtro</button>
-    <button @click="resetFilter">Redefinir Filtro</button>
-    <button @click="$emit('close')">Cancelar</button>
+    <v-btn @click="Filtros">Aplicar</v-btn>
+    <v-btn @click="resetFiltros">Redefinir</v-btn>
+    <v-btn @click="$emit('close')">Cancelar</v-btn>
   </div>
 </template>
 
 <script>
 export default {
-  emits: ["close"],
+  props: ["image"],
+  emits: ["close", "reset", "filter"],
   data() {
     return {
-      showFiltros: false,
-      selectedFilter: false,
+      selectedFilter: "",
     };
   },
   methods: {
-    applyFilter() {
+    Filtros() {
       if (this.image) {
-        this.image.filters = [];
+        // this.image.filters = [];
 
-        if (this.selectedFilter == "None") return this.canvas.renderAll();
-
-        let filterData = undefined;
-        if (this.selectedFilter == "Brightness") {
-          filterData = {
-            brightness: this.filterValue / 100,
-          };
-        } else if (this.selectedFilter == "Contrast") {
-          filterData = {
-            contrast: this.filterValue / 100,
-          };
+        switch (this.selectedFilter) {
+          case "none":
+            this.$emit("filter", [this.selectedFilter]);
+            break;
+          case "grayscale":
+            this.image.filters.push(new fabric.Image.filters.Grayscale());
+            this.$emit("filter", [this.selectedFilter]);
+            break;
+          case "sepia":
+            this.image.filters.push(new fabric.Image.filters.Sepia());
+            this.$emit("filter", [this.selectedFilter]);
+            break;
+          case "pixelate":
+            this.image.filters.push(
+              new fabric.Image.filters.Pixelate({
+                blocksize: 5,
+              })
+            );
+            this.$emit("filter", [this.selectedFilter]);
+            break;
         }
-
-        this.image.filters.push(
-          new fabric.Image.filters[this.selectedFilter](filterData)
-        );
-        this.applyFilters();
       }
     },
-
-    resetFilter() {
-      if (this.image) {
-        this.image.filters = [];
-        reader.readAsDataURL(file);
-
-        this.selectedFilter = "none";
-        this.filterValue = 0;
-      }
+    resetFiltros() {
+      this.selectedFilter = "";
+      this.$emit("reset");
     },
   },
 };
