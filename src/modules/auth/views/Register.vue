@@ -10,29 +10,8 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
-const passwordtest = "";
-
-
-const show = false;
-const required = true;
-const form = false;
-
-function passwordRules(input) {
-  let regexSpecial = /\W|_/;
-  let regexNumber = /(\d+)| /g;
-  if (input.includes(" ")) return "No spaces";
-  if ((input.length < 8, !regexSpecial.test(input), !regexNumber.test(input)))
-    return "At least 8 characters, 1 special character and 1 number";
-  return true;
-}
-function confirmPassword(passwordtest) {
-  return passwordtest !== this.password ? "Passwords don't match" : true;
-}
-
-
 const passwordConfirmation = ref("");
 const passwordType = ref("password");
-
 
 async function handleSignUp() {
   const result = await auth.signUp(email.value, password.value);
@@ -48,14 +27,14 @@ const isPasswordConfirmed = computed(() => {
 });
 
 const showPassword = () => {
-  passwordType.value =
+  passwordType.value = 
     passwordType.value === "password" ? "text" : "password";
 };
 </script>
 
 <template>
   <div
-    class="page bg-grey-lighten-3 d-flex align-center justify-center flex-column"
+    class="page bg-grey-darken-4 d-flex align-center justify-center flex-column"
   >
     <h1>CADASTRO</h1>
     <br />
@@ -77,8 +56,8 @@ const showPassword = () => {
           label="Senha"
           append-inner-icon="mdi-eye"
           @click:append-inner="showPassword"
-          />
-          
+        />
+
         <v-text-field
           v-model="passwordConfirmation"
           :type="passwordType"
@@ -122,8 +101,8 @@ const showPassword = () => {
 
 <style scoped>
 h1 {
-font-family: 'Kaushan Script', cursive;
-  color: rgb(75, 121, 131);
+  font-family: "Kaushan Script", cursive;
+  color: rgb(102, 184, 187);
   font-size: 2.2rem;
 }
 .page {

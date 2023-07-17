@@ -1,4 +1,5 @@
-<script setup></script>
+<script setup>
+</script>
 
 <template>
   <main class="bg-grey-lighten-4 overflow-hidden d-flex flex-column align-center"

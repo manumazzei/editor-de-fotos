@@ -11,14 +11,6 @@ export const routes = [
     },
 
   },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: () => import("../../user/views/Dashboard.vue"),
-    meta: {
-      requiresAuth: true,
-    },
-  },
 ]; 
 
 const getCurrentUser = () => {

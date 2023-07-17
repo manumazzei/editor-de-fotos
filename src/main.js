@@ -1,6 +1,7 @@
 
 import "../firebase.config";
-import "./assets/main.css";
+
+
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -19,7 +20,7 @@ const vuetify = createVuetify({
   }
 })
 import "@/modules/auth";
-
+import "@/modules/user";
 import "@/modules/photos";
 
 const app = createApp(App);

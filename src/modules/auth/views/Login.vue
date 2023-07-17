@@ -32,24 +32,14 @@ async function handleSignInGoogle() {
   router.push("/dashboard");
 }
 const showPassword = () => {
-  passwordType.value =
+  passwordType.value = 
     passwordType.value === "password" ? "text" : "password";
 };
 </script>
 
 <template>
-
-  <h1>LOGIN</h1>
-  <main>
-    <input type="email" v-model="email" />
-    <input type="text" v-model="password" />
-    <v-btn @click="handleSignIn">Log In</v-btn>
-
-    <v-btn @click="handleSignInGoogle">Log In with Google</v-btn>
-    </main>
-=========
   <div
-    class="page bg-grey-lighten-3 d-flex align-center justify-center flex-column"
+    class="page bg-grey-darken-4 d-flex align-center justify-center flex-column"
   >
     <h1>LOGIN</h1>
     <br />
@@ -64,14 +54,15 @@ const showPassword = () => {
         />
 
         <v-text-field
-          required
+        required
           variant="underlined"
-          type="password"
+          :type="passwordType"
           v-model="password"
-          label="Password"
+          label="Email"
+          append-inner-icon="mdi-eye"
+          @click:append-inner="showPassword"
         />
       </v-form>
-
 
       <div class="d-flex flex-column mx-16 mt-4">
         <v-btn
@@ -122,10 +113,9 @@ const showPassword = () => {
 
 <style scoped>
 h1 {
-  font-family: 'Kaushan Script', cursive;
-  color: rgb(75, 121, 131);
+  font-family: "Kaushan Script", cursive;
+  color: rgb(102, 184, 187);
   font-size: 2.2rem;
-
 }
 .page {
   height: 100vh;

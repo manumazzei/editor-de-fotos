@@ -11,4 +11,3 @@ store.registerModule("photo", photoStore);
 routes.forEach((route) => {
   router.addRoute(route);
 });
-
