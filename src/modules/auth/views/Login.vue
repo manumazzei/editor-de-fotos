@@ -32,7 +32,7 @@ async function handleSignInGoogle() {
   router.push("/dashboard");
 }
 const showPassword = () => {
-  passwordType.value =
+  passwordType.value = 
     passwordType.value === "password" ? "text" : "password";
 };
 </script>
@@ -54,7 +54,7 @@ const showPassword = () => {
         />
 
         <v-text-field
-          required
+        required
           variant="underlined"
           :type="passwordType"
           v-model="password"
@@ -113,10 +113,9 @@ const showPassword = () => {
 
 <style scoped>
 h1 {
-  font-family: 'Kaushan Script', cursive;
-  color: rgb(75, 129, 131);
+  font-family: "Kaushan Script", cursive;
+  color: rgb(102, 184, 187);
   font-size: 2.2rem;
-
 }
 .page {
   height: 100vh;
