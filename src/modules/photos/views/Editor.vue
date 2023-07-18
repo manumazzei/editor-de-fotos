@@ -23,7 +23,7 @@
           class="title"
           style="
             font-family: Bad Script, cursive;
-            font-size: 5rem;
+            font-size: 3rem;
             color: rgb(102, 184, 187);
           "
         >
