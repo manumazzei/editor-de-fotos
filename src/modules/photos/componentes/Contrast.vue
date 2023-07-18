@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     brilhoEcontraste() {
-      const brightness = this.brightness / 200; // escala de -0,5 a 0,5
+      const brightness = this.brightness / 900; // escala de -0,5 a 0,5
       const contrast = (this.contrast + 100) / 100; // escala de 0 a 2
       const saturation = (this.saturation + 100) / 100; // escala de 0 a 2
       const hue = this.hue; // ângulo de -180 a 180
