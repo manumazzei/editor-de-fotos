@@ -1,43 +1,170 @@
 <template>
-  <div>
-    <h2 @click="showBrilho = true">Brilho</h2>
-    <Contrast
-      v-if="showBrilho"
-      :image="image"
-      @filter="applyFilters"
-      @reset="resetFilters"
-      @close="showBrilho = false"
-    />
-  </div>
+  <v-sheet
+    class="d-flex flex-column align-center bg-grey-darken-4"
+    style="height: 100vh"
+  >
+    <header
+      style="
+        width: 100vw;
+        height: 10vh;
+        background-color: rgba(148, 184, 182, 0.308);
+      "
+      class="d-flex flex-column justify-center align-center"
+    >
+      <div class="d-flex justify-space-between align-center" style="width: 95%">
+        <v-btn
+          class="font text-teal-darken-3 rounded-xl"
+          color="grey-lighten-2"
+          @click="GoBack"
+          >Cancelar Edição</v-btn
+        >
+        <h1
+          class="title"
+          style="
+            font-family: Bad Script, cursive;
+            font-size: 5rem;
+            color: rgb(102, 184, 187);
+          "
+        >
+          Artfy
+        </h1>
+        <v-btn class="font text-teal-darken-3 rounded-xl" color="grey-lighten-2"
+          >Próximo</v-btn
+        >
+      </div>
+    </header>
+    <v-card class="w-50 pa-4 bg-grey-lighten-4 mt-4" style="height: 50%">
+      <v-file-input
+        color="teal-darken-1"
+        counter
+        multiple
+        placeholder="Select your files"
+        prepend-icon="mdi-paperclip"
+        variant="outlined"
+        :show-size="1000"
+        @click:clear="clearImg"
+        @change="handleFileSelect"
+      >
+        <template v-slot:selection="{ fileNames }">
+          <template v-for="(fileName, index) in fileNames" :key="fileName">
+            <v-chip
+              v-if="index < 2"
+              color="teal-darken-1"
+              label
+              size="small"
+              class="me-2"
+            >
+              {{ fileName }}
+            </v-chip>
+          </template>
+        </template>
+      </v-file-input>
 
-  <h2 @click="showResize = true">Redimensionar</h2>
-  <Resize
-    v-if="showResize"
-    :image="image"
-    @filter="applyFilters"
-    @close="showResize = false"
-  />
+      <div style="height: 35vh; width: 45vw" class="ml-6">
+        <canvas ref="canvas" width="822" height="340"></canvas>
+      </div>
 
-  <h2 @click="showFiltros = true">Filtros</h2>
-  <Filters
-    v-if="showFiltros"
-    :image="image"
-    @filter="applyFilters"
-    @reset="resetFilters"
-    @close="showFiltros = false"
-  />
+      <v-col class="d-flex justify-space-between">
+        <v-tooltip location="top">
+          <template v-slot:activator="{ props: tooltip }">
+            <v-icon
+              v-bind="tooltip"
+              class="mdi mdi-white-balance-sunny"
+              @click="showBrilho = true"
+              color="teal-darken-3"
+            ></v-icon>
+          </template>
+          <span>Brilho</span>
+        </v-tooltip>
 
-  <h2 @click="showSpin = true">Girar e inverter</h2>
-  <Spin
-    v-if="showSpin"
-    :image="image"
-    @filter="applyFilters"
-    @event="applyFilters"
-    @close="showSpin = false"
-  />
+        <v-tooltip location="top">
+          <template v-slot:activator="{ props: tooltip }">
+            <v-icon
+              v-bind="tooltip"
+              class="mdi mdi-resize"
+              @click="showResize = true"
+              color="teal-darken-3"
+            ></v-icon>
+          </template>
+          <span>Redimensionar</span>
+        </v-tooltip>
 
-  <input type="file" @change="handleFileSelect" />
-  <canvas ref="canvas"></canvas>
+        <v-tooltip location="top">
+          <template v-slot:activator="{ props: tooltip }">
+            <v-icon
+              v-bind="tooltip"
+              class="mdi mdi-image-filter-hdr"
+              @click="showFiltros = true"
+              color="teal-darken-3"
+            ></v-icon>
+          </template>
+          <span>Filtros</span>
+        </v-tooltip>
+
+        <v-tooltip location="top">
+          <template v-slot:activator="{ props: tooltip }">
+            <v-icon
+              v-bind="tooltip"
+              class="mdi mdi-undo"
+              @click="showSpin = true"
+              color="teal-darken-3"
+            ></v-icon>
+          </template>
+          <span>Girar</span>
+        </v-tooltip>
+      </v-col>
+    </v-card>
+
+    <v-sheet
+      class="d-flex justify-center align-center"
+      style="background-color: rgb(245, 245, 245)"
+    >
+      <v-sheet
+        class="d-inline-flex justify-space-between bg-grey-darken-4"
+        style="height: 36vh; width: 50vw"
+      >
+        <v-sheet style="width: 30%; background-color: transparent">
+          <Contrast
+            v-if="showBrilho"
+            :image="image"
+            @filter="applyFilters"
+            @reset="resetFilters"
+            @close="showBrilho = false"
+          />
+        </v-sheet>
+
+        <v-sheet style="width: 30%; background-color: transparent">
+          <Resize
+            v-if="showResize"
+            :image="image"
+            @filter="applyFilters"
+            @close="showResize = false"
+            @reset="resetFilters"
+          />
+        </v-sheet>
+        <v-sheet style="width: 30%; background-color: transparent">
+          <Filters
+            v-if="showFiltros"
+            :image="image"
+            @filter="applyFilters"
+            @reset="resetFilters"
+            @close="showFiltros = false"
+          />
+        </v-sheet>
+        <v-sheet style="width: 30%; background-color: transparent">
+          <Spin
+            v-if="showSpin"
+            :image="image"
+            @filterRight="applyFilters"
+            @filterLeft="applyFilters"
+            @eventX="applyFilters"
+            @eventY="applyFilters"
+            @close="showSpin = false"
+          />
+        </v-sheet>
+      </v-sheet>
+    </v-sheet>
+  </v-sheet>
 </template>
 
 <script>
@@ -46,6 +173,7 @@ import Spin from "../componentes/Spin.vue";
 import Contrast from "../componentes/Contrast.vue";
 import Resize from "../componentes/Resize.vue";
 import Filters from "../componentes/Filters.vue";
+import { routerKey } from "vue-router";
 
 export default {
   name: "PhotoEditor",
@@ -63,6 +191,8 @@ export default {
       showFiltros: false,
       image: null,
       canvas: null,
+      undoStack: [],
+      redoStack: [],
     };
   },
   mounted() {
@@ -70,6 +200,9 @@ export default {
     this.fabricCanvas = new fabric.Canvas(this.canvas);
   },
   methods: {
+    clearImg() {
+      this.canvas = null;
+    },
     handleFileSelect(event) {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -82,6 +215,30 @@ export default {
 
           this.canvas = new fabric.Canvas(this.$refs.canvas);
           this.canvas.add(this.image);
+
+          // tamanho do canvas e da imagem
+          const canvasWidth = this.canvas.width;
+          const canvasHeight = this.canvas.height;
+          const imageWidth = this.image.width;
+          const imageHeight = this.image.height;
+
+          if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
+            // Calcula a escala para ajustar a imagem ao canvas
+            const scaleX = canvasWidth / imageWidth;
+            const scaleY = canvasHeight / imageHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            // Ajusta a escala da imagem para caber no canvas
+            this.image.scaleX = scale;
+            this.image.scaleY = scale;
+
+            // Centraliza a imagem no canvas
+            const x = (canvasWidth - this.image.getScaledWidth()) / 2;
+            const y = (canvasHeight - this.image.getScaledHeight()) / 2;
+
+            // Define as coordenadas x e y da imagem
+            this.image.set({ left: x, top: y });
+          }
         });
       };
 
@@ -99,6 +256,9 @@ export default {
         this.image.applyFilters();
         this.canvas.requestRenderAll();
       }
+    },
+    GoBack() {
+      this.$router.push("/dashboard");
     },
   },
 };
