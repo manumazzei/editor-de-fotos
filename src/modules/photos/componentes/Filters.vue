@@ -1,30 +1,36 @@
 <template>
-  <div>
-    <label for="filter">Filtro:</label>
-    <select id="filter" v-model="selectedFilter">
-      <option value="none">Nenhum</option>
-      <option value="grayscale">Tons de Cinza</option>
-      <option value="sepia">Sépia</option>
-      <option value="noise">Ruido</option>
-      <option value="pixelate">Pixel</option>
-    </select>
-    <div
-      v-if="selectedFilter === 'brightness' || selectedFilter === 'contrast'"
+  <v-sheet
+    style="background-color: rgb(245, 245, 245)"
+    class="mt-2 h-100"
+    align="center"
+  >
+    <v-autocomplete
+      class="pt-6 px-4"
+      :items="CamposdeFiltros"
+      v-model="selectedFilter"
+      variant="outlined"
+      label="Filtros:"
+      item-title="label"
+      item-value="value"
+    ></v-autocomplete>
+
+    <v-sheet
+      class="d-flex justify-space-between align-end ml-4 mt-6 w-75 h-50"
+      style="background-color: rgb(245, 245, 245)"
     >
-      <label for="filterValue">Valor:</label>
-      <input
-        type="range"
-        id="filterValue"
-        v-model="filterValue"
-        :min="filterMinValue"
-        :max="filterMaxValue"
-        :step="filterStep"
-      />
-    </div>
-    <v-btn @click="Filtros">Aplicar</v-btn>
-    <v-btn @click="resetFiltros">Redefinir</v-btn>
-    <v-btn @click="$emit('close')">Cancelar</v-btn>
-  </div>
+      <v-icon @click="Filtros" class="mdi mdi-check" color="success"></v-icon>
+      <v-icon
+        @click="resetFiltros"
+        class="mdi mdi-restart"
+        color="warning"
+      ></v-icon>
+      <v-icon
+        @click="$emit('close')"
+        class="mdi mdi-window-close"
+        color="error"
+      ></v-icon>
+    </v-sheet>
+  </v-sheet>
 </template>
 
 <script>
@@ -34,6 +40,15 @@ export default {
   data() {
     return {
       selectedFilter: "",
+      CamposdeFiltros: [
+        { label: "Nenhum", value: "none" },
+        { label: "Tons de Cinza", value: "grayscale" },
+        { label: "Sépia", value: "sepia" },
+        { label: "Pixel", value: "pixelate" },
+        { label: "Vintage", value: "vintage" },
+        { label: "Nitidez", value: "sharpen" },
+        { label: "Relevo", value: "emboss" },
+      ],
     };
   },
   methods: {
@@ -57,6 +72,26 @@ export default {
             this.image.filters.push(
               new fabric.Image.filters.Pixelate({
                 blocksize: 5,
+              })
+            );
+            this.$emit("filter", [this.selectedFilter]);
+            break;
+          case "vintage":
+            this.image.filters.push(new fabric.Image.filters.Vintage());
+            this.$emit("filter", [this.selectedFilter]);
+            break;
+          case "sharpen":
+            this.image.filters.push(
+              new fabric.Image.filters.Convolute({
+                matrix: [0, -1, 0, -1, 5, -1, 0, -1, 0],
+              })
+            );
+            this.$emit("filter", [this.selectedFilter]);
+            break;
+          case "emboss":
+            this.image.filters.push(
+              new fabric.Image.filters.Convolute({
+                matrix: [1, 1, 1, 1, 0.7, -1, -1, -1, -1],
               })
             );
             this.$emit("filter", [this.selectedFilter]);
