@@ -34,7 +34,7 @@ function createPost() {
 </script>
 
 <template>
-<Loading v-if="loading"></Loading>
+  <Loading v-if="loading"></Loading>
   <v-sheet
     class="page bg-grey-darken-4 d-flex flex-column justify-center align-center"
   >
@@ -43,15 +43,15 @@ function createPost() {
         <v-btn
           class="font text-teal-darken-3 rounded-xl"
           color="grey-lighten-2"
-          @click="createPost"
-          >Criar novo post</v-btn
+          @click="logOut"
+          >Log Out</v-btn
         >
         <h1 class="title py-2">Artfy Feed</h1>
         <v-btn
           class="font text-teal-darken-3 rounded-xl"
           color="grey-lighten-2"
-          @click="logOut"
-          >Log Out</v-btn
+          @click="createPost"
+          >Criar novo post</v-btn
         >
       </div>
     </header>
@@ -83,16 +83,16 @@ function createPost() {
           </div>
           <div class="w100 bg-transparent">
             <div
-            class="w100 bg-transparent"
-            v-for="photo in listStore.photos"
-            :key="photo"
+              class="w100 bg-transparent"
+              v-for="photo in listStore.photos"
+              :key="photo"
             >
-            <v-list-item
-            class="ma-8 pa-0 bg-transparent d-flex justify-center align-center"
-            v-if="photo.name === data.id"
-            >
-            <img class="photo" :src="photo.url" />
-          </v-list-item>
+              <v-list-item
+                class="ma-8 pa-0 bg-transparent d-flex justify-center align-center"
+                v-if="photo.name === data.id"
+              >
+                <img class="photo" :src="photo.url" />
+              </v-list-item>
             </div>
           </div>
         </v-card>
