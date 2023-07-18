@@ -1,16 +1,17 @@
-import router from "@/router";
+import { router } from "@/router";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export const routes = [
   {
     path: "/dashboard",
-    name: "/dashboard",
+    name: "dashboard",
     component: () => import("../views/Dashboard.vue"),
     meta: {
-      requireAuth: true,
+      requiresAuth: true,
     },
+
   },
-];
+]; 
 
 const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
@@ -25,7 +26,7 @@ const getCurrentUser = () => {
   });
 };
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (await getCurrentUser()) {
       next();

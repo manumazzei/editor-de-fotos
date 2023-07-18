@@ -1,4 +1,5 @@
 <template>
+
   <v-sheet
     class="d-flex flex-column align-center bg-grey-darken-4"
     style="height: 100vh"
@@ -223,6 +224,7 @@
       </v-form>
     </v-card>
   </v-sheet>
+
 </template>
 
 <script>
@@ -250,6 +252,15 @@ export default {
       fotografo: "",
       imgRef: null,
       showSpin: false,
+
+      showInfos: false,
+      nome: "",
+      dataEdicao: "",
+      descricao: "",
+      medidas: "",
+      fotografo: "",
+      imgRef: null,
+
       showBrilho: false,
       showResize: false,
       showFiltros: false,
@@ -271,6 +282,7 @@ export default {
     },
     handleFileSelect(event) {
       const file = event.target.files[0];
+      this.imgRef = file;
       const reader = new FileReader();
 
       reader.onload = (e) => {
@@ -310,6 +322,16 @@ export default {
 
       reader.readAsDataURL(file);
     },
+    handleSave() {
+      const payload = {
+        nome: this.nome.valueOf(),
+        dataEdicao: this.dataEdicao.valueOf(),
+        descricao: this.descricao.valueOf(),
+        medidas: this.medidas.valueOf(),
+        fotografo: this.fotografo.valueOf(),
+      };
+    },
+
 
     applyFilters() {
       this.image.applyFilters();
@@ -322,6 +344,19 @@ export default {
         this.image.applyFilters();
         this.canvas.requestRenderAll();
       }
+
+      const imgPayload = this.imgRef;
+      const res = content.photo.createItem(payload, imgPayload);
+
+      if (res) {
+        alert("criado com sucesso!");
+      }
+    },
+    handleInfos(event) {
+      this.imgRef = event.target.files[0];
+    },
+    openInfos() {
+      this.showInfos = true;
     },
     GoBack() {
       this.$router.push("/dashboard");

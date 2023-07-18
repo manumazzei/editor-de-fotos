@@ -21,7 +21,6 @@ export const listStore = reactive({
   async infoImg() {
     const res = await infoImg();
     this.data = res;
-    console.log(data);
     return res;
   },
 });
