@@ -66,10 +66,6 @@ import Spin from "../componentes/Spin.vue";
 import Contrast from "../componentes/Contrast.vue";
 import Resize from "../componentes/Resize.vue";
 import Filters from "../componentes/Filters.vue";
-import { useRouter } from "vue-router";
-import { useStore } from "@/composables/useStore";
-
-const { content } = useStore();
 
 export default {
   name: "PhotoEditor",
@@ -130,6 +126,7 @@ export default {
         fotografo: this.fotografo.valueOf(),
       };
     },
+
 
     applyFilters() {
       this.image.applyFilters();
