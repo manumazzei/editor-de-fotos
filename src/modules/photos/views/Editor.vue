@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <h2 @click="showBrilho = true">Brilho</h2>
     <Contrast
       v-if="showBrilho"
@@ -10,7 +9,6 @@
       @close="showBrilho = false"
     />
   </div>
-
 
   <h2 @click="showResize = true">Redimensionar</h2>
   <Resize
@@ -38,14 +36,11 @@
     @close="showSpin = false"
   />
 
-
   <input type="file" @change="handleFileSelect" />
   <canvas ref="canvas"></canvas>
 
-      <button @click="showFiltros = true">Filtros</button>
-      <Filters v-if="showFiltros" @close="showFiltros = false" />
-    </div>
-  </div>
+  <button @click="showFiltros = true">Filtros</button>
+  <Filters v-if="showFiltros" @close="showFiltros = false" />
 
   <div v-if="showInfos">
     <div>
@@ -60,10 +55,9 @@
       <input v-model="fotografo" placeholder="Nome do fotográfo" />
 
       <button @click="handleSave" variant="tonal">Salvar</button>
-      <button @click="showInfos = false ">Cancelar</button>
+      <button @click="showInfos = false">Cancelar</button>
     </form>
   </div>
-
 </template>
 
 <script>
@@ -87,7 +81,6 @@ export default {
   },
   data() {
     return {
-
       showSpin: false,
 
       showInfos: false,
@@ -112,7 +105,7 @@ export default {
   methods: {
     handleFileSelect(event) {
       const file = event.target.files[0];
-      this.imgRef = file
+      this.imgRef = file;
       const reader = new FileReader();
 
       reader.onload = (e) => {
@@ -136,7 +129,7 @@ export default {
         medidas: this.medidas.valueOf(),
         fotografo: this.fotografo.valueOf(),
       };
-
+    },
 
     applyFilters() {
       this.image.applyFilters();
@@ -162,7 +155,6 @@ export default {
     },
     openInfos() {
       this.showInfos = true;
-
     },
   },
 };
