@@ -16,6 +16,7 @@ onMounted(async () => {
   try {
     await listStore.listProjects();
     await listStore.infoImg();
+    console.log(listStore.photos, listStore.data);
     files.value = listStore.data;
   } catch (error) {
     console.log(error);
@@ -35,6 +36,7 @@ function createPost() {
 
 <template>
   <Loading v-if="loading"></Loading>
+
   <v-sheet
     class="page bg-grey-darken-4 d-flex flex-column justify-center align-center"
   >

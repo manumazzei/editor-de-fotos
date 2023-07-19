@@ -1,5 +1,4 @@
 <template>
-
   <v-sheet
     class="d-flex flex-column align-center bg-grey-darken-4"
     style="height: 100vh"
@@ -216,7 +215,10 @@
           v-model="fotografo"
           placeholder="Nome do fotográfo"
         />
-        <v-sheet class="d-inline-flex justify-space-between w-50" style="background-color: rgb(245, 245, 245);">
+        <v-sheet
+          class="d-inline-flex justify-space-between w-50"
+          style="background-color: rgb(245, 245, 245)"
+        >
           <v-btn @click="handleSave">Salvar</v-btn>
 
           <v-btn @click="showModalInfos = false">Fechar</v-btn>
@@ -224,7 +226,6 @@
       </v-form>
     </v-card>
   </v-sheet>
-
 </template>
 
 <script>
@@ -234,6 +235,11 @@ import Contrast from "../componentes/Contrast.vue";
 import Resize from "../componentes/Resize.vue";
 import Filters from "../componentes/Filters.vue";
 import { routerKey } from "vue-router";
+import { useRouter } from "vue-router";
+import { useStore } from "@/composables/useStore";
+import { photoStore } from "../store";
+
+const { content } = useStore();
 
 export default {
   name: "PhotoEditor",
@@ -322,16 +328,6 @@ export default {
 
       reader.readAsDataURL(file);
     },
-    handleSave() {
-      const payload = {
-        nome: this.nome.valueOf(),
-        dataEdicao: this.dataEdicao.valueOf(),
-        descricao: this.descricao.valueOf(),
-        medidas: this.medidas.valueOf(),
-        fotografo: this.fotografo.valueOf(),
-      };
-    },
-
 
     applyFilters() {
       this.image.applyFilters();
@@ -343,13 +339,6 @@ export default {
         this.image.filters = [];
         this.image.applyFilters();
         this.canvas.requestRenderAll();
-      }
-
-      const imgPayload = this.imgRef;
-      const res = content.photo.createItem(payload, imgPayload);
-
-      if (res) {
-        alert("criado com sucesso!");
       }
     },
     handleInfos(event) {
@@ -368,7 +357,7 @@ export default {
       this.showEditor = false;
       this.showModalInfos = true;
     },
-    handleSave() {
+    async handleSave() {
       const payload = {
         nome: this.nome.valueOf(),
         dataEdicao: this.dataEdicao.valueOf(),
@@ -378,10 +367,10 @@ export default {
       };
 
       const imgPayload = this.imgRef;
-      const res = content.photo.createItem(payload, imgPayload);
-
+      const res = await content.photo.createItem(payload, imgPayload);
       if (res) {
         alert("criado com sucesso!");
+        this.$router.push("/dashboard");
       }
     },
   },

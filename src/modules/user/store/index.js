@@ -4,7 +4,7 @@ import { listProjects, infoImg } from "../api";
 export const listStore = reactive({
   photo: {},
   photos: [],
-  data: {},
+  data: [],
   setList(photo) {
     this.photo = photo;
   },

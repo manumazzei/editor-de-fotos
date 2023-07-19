@@ -1,6 +1,6 @@
 import { ref } from "firebase/storage";
 import { storage } from "../../../../firebase.config";
-import { Save } from "../api";
+import { Save, createItem } from "../api";
 import { reactive } from "vue";
 
 export const photoStore = reactive({
@@ -9,4 +9,16 @@ export const photoStore = reactive({
     const storageRef = ref(storage, name);
     return await Save(storageRef, file);
   },
+  async createItem(payload, image) {
+    const res = await createItem(payload, image);
+    this.dbItems.push(res);
+    return res;
+  },
+  dbItems: [],
+  async getItems() {
+    const res = await getItems();
+    this.dbItems = res;
+  },
 });
+
+export const itemsStore = reactive({});
