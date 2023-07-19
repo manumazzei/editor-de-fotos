@@ -219,9 +219,8 @@
           class="d-inline-flex justify-space-between w-50"
           style="background-color: rgb(245, 245, 245)"
         >
-          <v-btn @click="handleSave">Salvar</v-btn>
-
           <v-btn @click="showModalInfos = false">Fechar</v-btn>
+          <v-btn @click="handleSave">Salvar</v-btn>
         </v-sheet>
       </v-form>
     </v-card>
