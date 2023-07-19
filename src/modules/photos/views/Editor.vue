@@ -364,8 +364,7 @@ export default {
         medidas: this.medidas.valueOf(),
         fotografo: this.fotografo.valueOf(),
       };
-
-      const imgPayload = this.imgRef;
+      const imgPayload = this.canvas.toDataURL("image/jpeg");
       const res = await content.photo.createItem(payload, imgPayload);
       if (res) {
         alert("criado com sucesso!");

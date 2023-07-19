@@ -5,6 +5,7 @@ import {
   listAll,
   getDownloadURL,
   getMetadata,
+  uploadString,
 } from "firebase/storage";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { storage, db } from "../../../firebase.config";
@@ -22,7 +23,7 @@ export async function createItem(payload, image) {
 
     const imageRef = ref(storage, `${docRef.id}`);
 
-    await uploadBytes(imageRef, image);
+    await uploadString(imageRef, image, "data_url");
 
     return docRef;
   } catch (err) {
