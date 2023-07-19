@@ -5,7 +5,7 @@
     align="center"
   >
     <v-autocomplete
-      class="pt-6 px-4"
+      class="pt-12 px-4"
       :items="CamposdeFiltros"
       v-model="selectedFilter"
       variant="outlined"
@@ -15,7 +15,7 @@
     ></v-autocomplete>
 
     <v-sheet
-      class="d-flex justify-space-between align-end ml-4 mt-6 w-75 h-50"
+      class="d-flex justify-space-between align-end ml-4 mt-8 w-75 h-50"
       style="background-color: rgb(245, 245, 245)"
     >
       <v-icon @click="Filtros" class="mdi mdi-check" color="success"></v-icon>
