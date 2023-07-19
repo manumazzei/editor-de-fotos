@@ -1,5 +1,4 @@
 <template>
-
   <v-sheet
     class="d-flex flex-column align-center bg-grey-darken-4"
     style="height: 100vh"
@@ -23,13 +22,16 @@
           class="title"
           style="
             font-family: Bad Script, cursive;
-            font-size: 5rem;
+            font-size: 3rem;
             color: rgb(102, 184, 187);
           "
         >
           Artfy
         </h1>
-        <v-btn class="font text-teal-darken-3 rounded-xl" color="grey-lighten-2"
+        <v-btn
+          class="font text-teal-darken-3 rounded-xl"
+          color="grey-lighten-2"
+          @click="changeModals"
           >Próximo</v-btn
         >
       </div>
@@ -121,6 +123,7 @@
       style="background-color: rgb(245, 245, 245)"
     >
       <v-sheet
+        v-if="showEditor"
         class="d-inline-flex justify-space-between bg-grey-darken-4"
         style="height: 36vh; width: 50vw"
       >
@@ -165,8 +168,63 @@
         </v-sheet>
       </v-sheet>
     </v-sheet>
-  </v-sheet>
 
+    <v-card
+      v-if="showModalInfos"
+      class="h-50 w-50"
+      style="background-color: rgb(245, 245, 245)"
+    >
+      <v-form
+        @submit.prevent
+        class="d-flex flex-column justify-center align-center"
+      >
+        <v-text-field
+          class="w-75"
+          required
+          variant="underlined"
+          v-model="nome"
+          placeholder="Nome da foto"
+        />
+        <v-text-field
+          class="w-75"
+          required
+          variant="underlined"
+          v-model="dataEdicao"
+          type="date"
+          placeholder="Data Edição"
+        />
+        <v-text-field
+          class="w-75"
+          required
+          variant="underlined"
+          v-model="descricao"
+          placeholder="Descrição"
+        />
+
+        <v-text-field
+          class="w-75"
+          required
+          variant="underlined"
+          v-model="medidas"
+          placeholder="Altura x largura"
+        />
+        <v-text-field
+          class="w-75"
+          required
+          variant="underlined"
+          v-model="fotografo"
+          placeholder="Nome do fotográfo"
+        />
+        <v-sheet
+          class="d-inline-flex justify-space-between w-50"
+          style="background-color: rgb(245, 245, 245)"
+        >
+          <v-btn @click="showModalInfos = false">Fechar</v-btn>
+          <v-btn @click="handleSave">Salvar</v-btn>
+        </v-sheet>
+      </v-form>
+    </v-card>
+  </v-sheet>
 </template>
 
 <script>
@@ -176,6 +234,11 @@ import Contrast from "../componentes/Contrast.vue";
 import Resize from "../componentes/Resize.vue";
 import Filters from "../componentes/Filters.vue";
 import { routerKey } from "vue-router";
+import { useRouter } from "vue-router";
+import { useStore } from "@/composables/useStore";
+import { photoStore } from "../store";
+
+const { content } = useStore();
 
 export default {
   name: "PhotoEditor",
@@ -187,6 +250,12 @@ export default {
   },
   data() {
     return {
+      nome: "",
+      dataEdicao: "",
+      descricao: "",
+      medidas: "",
+      fotografo: "",
+      imgRef: null,
       showSpin: false,
 
       showInfos: false,
@@ -200,6 +269,8 @@ export default {
       showBrilho: false,
       showResize: false,
       showFiltros: false,
+      showModalInfos: false,
+      showEditor: true,
       image: null,
       canvas: null,
       undoStack: [],
@@ -256,16 +327,6 @@ export default {
 
       reader.readAsDataURL(file);
     },
-    handleSave() {
-      const payload = {
-        nome: this.nome.valueOf(),
-        dataEdicao: this.dataEdicao.valueOf(),
-        descricao: this.descricao.valueOf(),
-        medidas: this.medidas.valueOf(),
-        fotografo: this.fotografo.valueOf(),
-      };
-    },
-
 
     applyFilters() {
       this.image.applyFilters();
@@ -278,13 +339,6 @@ export default {
         this.image.applyFilters();
         this.canvas.requestRenderAll();
       }
-
-      const imgPayload = this.imgRef;
-      const res = content.photo.createItem(payload, imgPayload);
-
-      if (res) {
-        alert("criado com sucesso!");
-      }
     },
     handleInfos(event) {
       this.imgRef = event.target.files[0];
@@ -294,6 +348,28 @@ export default {
     },
     GoBack() {
       this.$router.push("/dashboard");
+    },
+    openModalInfos() {
+      this.showModalInfos = true;
+    },
+    changeModals() {
+      this.showEditor = false;
+      this.showModalInfos = true;
+    },
+    async handleSave() {
+      const payload = {
+        nome: this.nome.valueOf(),
+        dataEdicao: this.dataEdicao.valueOf(),
+        descricao: this.descricao.valueOf(),
+        medidas: this.medidas.valueOf(),
+        fotografo: this.fotografo.valueOf(),
+      };
+      const imgPayload = this.canvas.toDataURL("image/jpeg");
+      const res = await content.photo.createItem(payload, imgPayload);
+      if (res) {
+        alert("criado com sucesso!");
+        this.$router.push("/dashboard");
+      }
     },
   },
 };
