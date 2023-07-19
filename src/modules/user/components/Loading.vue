@@ -1,12 +1,12 @@
 <template>
-  <modal class="loading-container w-100 h-100">
+  <div class="loading-container w-100 h-100">
     <v-progress-circular 
     :size="65" 
     :width="7"
     color="teal-lighten-3" 
     indeterminate>
     </v-progress-circular>
-  </modal>
+  </div>
 </template>
 
 <style>

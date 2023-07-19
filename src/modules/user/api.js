@@ -39,7 +39,6 @@ export const infoImg = async () => {
     const data = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
     });
-   /*  console.log(data[2].nome); */
     return data;
   } catch (error) {
     console.log(error);

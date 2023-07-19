@@ -144,6 +144,7 @@ header {
   width: 100%;
 }
 .photo {
-  width: 750px;
+  max-width: 750px;
+  max-height: 600px;
 }
 </style>
