@@ -14,10 +14,9 @@ const loading = ref(true);
 
 onMounted(async () => {
   try {
-    await listStore.listProjects();
-    await listStore.infoImg();
-    console.log(listStore.photos, listStore.data);
-    files.value = listStore.data;
+    await listStore.listPhotos();
+    console.log(listStore.photo, listStore.photos);
+    files.value = listStore.photos;
   } catch (error) {
     console.log(error);
   } finally {
@@ -38,19 +37,38 @@ function createPost() {
   <Loading v-if="loading"></Loading>
 
   <v-sheet
-    class="page bg-grey-darken-4 d-flex flex-column justify-center align-center"
+    class="bg-grey-darken-4 d-flex flex-column justify-center align-center"
+    style="
+      max-width: 100vw;
+      max-height: 100vh;
+      background-color: rgba(148, 184, 182, 0.308);
+    "
   >
-    <header class="d-flex flex-column justify-center align-center">
-      <div class="btn d-flex justify-space-between align-center">
+    <header
+      style="width: 100vw; height: 10vh"
+      class="d-flex flex-column justify-center align-center"
+    >
+      <div class="d-flex justify-space-between align-center" style="width: 95%">
         <v-btn
-          class="font text-teal-darken-3 rounded-xl"
+          class="text-teal-darken-3 rounded-xl"
+          style="font-family: 'Manrope', sans-serif; font-size: 1rem"
           color="grey-lighten-2"
           @click="logOut"
           >Log Out</v-btn
         >
-        <h1 class="title py-2">Artfy Feed</h1>
+        <h1
+          class="py-2"
+          style="
+            font-family: 'Bad Script', cursive;
+            font-size: 3rem;
+            color: rgb(102, 184, 187);
+          "
+        >
+          Artfy Feed
+        </h1>
         <v-btn
-          class="font text-teal-darken-3 rounded-xl"
+          class="text-teal-darken-3 rounded-xl"
+          style="font-family: 'Manrope', sans-serif; font-size: 1rem"
           color="grey-lighten-2"
           @click="createPost"
           >Criar novo post</v-btn
@@ -60,8 +78,8 @@ function createPost() {
     <v-card width="60%" class="bg-transparent overflow-auto pr-2 mt-4">
       <v-list
         class="teste2 bg-transparent"
-        v-for="data in listStore.data"
-        :key="data"
+        v-for="photo in listStore.photos"
+        :key="photo"
       >
         <v-card
           class="mb-4 bg-grey-lighten-2 d-flex flex-row-reverse justify-center align-center"
@@ -69,31 +87,34 @@ function createPost() {
           rounded="xl"
         >
           <div
-            class="w35 d-flex flex-column justify-center align-start text-grey-darken-3 my-4"
+            class="d-flex flex-column justify-center align-start text-grey-darken-3 my-4"
+            style="
+              width: 35%;
+              font-family: 'Manrope', sans-serif;
+              font-size: 1.3rem;
+            "
           >
-            <v-list-item class="text-h5">Nome: {{ data.nome }}</v-list-item>
+            <v-list-item class="text-h5">Nome: {{ photo.nome }}</v-list-item>
             <v-list-item class="text-subtitle-1 mb-12"
-              >Fotográfo: {{ data.fotografo }}</v-list-item
+              >Fotográfo: {{ photo.fotografo }}</v-list-item
             >
-            <v-list-item>Descrição: {{ data.descricao }}</v-list-item>
+            <v-list-item>Descrição: {{ photo.descricao }}</v-list-item>
             <v-list-item class="text-subtitle-1"
-              >Dimensões: {{ data.medidas }}cm</v-list-item
+              >Dimensões: {{ photo.medidas }}cm</v-list-item
             >
             <v-list-item class="text-subtitle-1"
-              >Data da edição: {{ data.dataEdicao }}</v-list-item
+              >Data da edição: {{ photo.dataEdicao }}</v-list-item
             >
           </div>
-          <div class="w100 bg-transparent">
-            <div
-              class="w100 bg-transparent"
-              v-for="photo in listStore.photos"
-              :key="photo"
-            >
+          <div class="bg-transparent" style="width: 100%">
+            <div class="bg-transparent" style="width: 100%">
               <v-list-item
                 class="ma-8 pa-0 bg-transparent d-flex justify-center align-center"
-                v-if="photo.name === data.id"
               >
-                <img class="photo" :src="photo.url" />
+                <img
+                  style="max-width: 750px; max-height: 600px"
+                  :src="photo.url"
+                />
               </v-list-item>
             </div>
           </div>
@@ -104,27 +125,6 @@ function createPost() {
 </template>
 
 <style scoped>
-.page {
-  max-width: 100vw;
-  max-height: 100vh;
-}
-.title {
-  font-family: "Bad Script", cursive;
-  font-size: 3rem;
-  color: rgb(102, 184, 187);
-}
-header {
-  width: 100vw;
-  height: 10vh;
-  background-color: rgba(148, 184, 182, 0.308);
-}
-.btn {
-  width: 95%;
-}
-.font {
-  font-family: "Manrope", sans-serif;
-  font-size: 1rem;
-}
 ::-webkit-scrollbar {
   margin-top: 20px;
   width: 10px;
@@ -134,17 +134,5 @@ header {
 ::-webkit-scrollbar-thumb {
   background: rgb(102, 184, 187);
   border-radius: 5px;
-}
-.w35 {
-  width: 35%;
-  font-family: "Manrope", sans-serif;
-  font-size: 1.3rem;
-}
-.w100 {
-  width: 100%;
-}
-.photo {
-  max-width: 750px;
-  max-height: 600px;
 }
 </style>

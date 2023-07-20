@@ -1,3 +1,50 @@
+<script>
+export default {
+  props: ["image"],
+  emits: ["close", "filterRight", "filterLeft", "eventX", "eventY"],
+  data() {
+    return {
+      angulo: 0,
+    };
+  },
+  methods: {
+    rotateRightImage() {
+      if (this.image) {
+        this.angulo = this.angulo + 90;
+        const rotationAngle = this.angulo;
+
+        this.image.rotate(rotationAngle);
+      }
+      this.$emit("filterRight", [this.angulo]);
+    },
+
+    rotateLeftImage() {
+      if (this.image) {
+        this.angulo = this.angulo - 90;
+        const rotationAngle = this.angulo;
+
+        this.image.rotate(rotationAngle);
+      }
+      this.$emit("filterLeft", [this.angulo]);
+    },
+
+    flipImageY() {
+      if (this.image) {
+        this.image.flipY = !this.image.flipY;
+      }
+      this.$emit("eventY", [this.image.flipY]);
+    },
+
+    flipImageX() {
+      if (this.image) {
+        this.image.flipX = !this.image.flipX;
+      }
+      this.$emit("eventX", [this.image.flipX]);
+    },
+  },
+};
+</script>
+
 <template>
   <v-sheet
     class="d-flex flex-column mt-2 h-100"
@@ -65,49 +112,3 @@
   </v-sheet>
 </template>
 
-<script>
-export default {
-  props: ["image"],
-  emits: ["close", "filterRight", "filterLeft", "eventX", "eventY"],
-  data() {
-    return {
-      angulo: 0,
-    };
-  },
-  methods: {
-    rotateRightImage() {
-      if (this.image) {
-        this.angulo = this.angulo + 90;
-        const rotationAngle = this.angulo;
-
-        this.image.rotate(rotationAngle);
-      }
-      this.$emit("filterRight", [this.angulo]);
-    },
-
-    rotateLeftImage() {
-      if (this.image) {
-        this.angulo = this.angulo - 90;
-        const rotationAngle = this.angulo;
-
-        this.image.rotate(rotationAngle);
-      }
-      this.$emit("filterLeft", [this.angulo]);
-    },
-
-    flipImageY() {
-      if (this.image) {
-        this.image.flipY = !this.image.flipY;
-      }
-      this.$emit("eventY", [this.image.flipY]);
-    },
-
-    flipImageX() {
-      if (this.image) {
-        this.image.flipX = !this.image.flipX;
-      }
-      this.$emit("eventX", [this.image.flipX]);
-    },
-  },
-};
-</script>

@@ -17,28 +17,34 @@ const listRef = ref(storage);
 
 //
 
-export const listProjects = async () => {
+// export const listPhotos = async () => {
+//   try {
+//     const res = await listAll(listRef);
+//     const items = await Promise.all(
+//       res.items.map(async (itemRef) => {
+//         const url = await getDownloadURL(itemRef);
+//         const data = await getMetadata(itemRef);
+//         return { ...data, url };
+//       })
+//     );
+//     return items;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+export const listPhotos = async () => {
   try {
-    const res = await listAll(listRef);
-    const items = await Promise.all(
-      res.items.map(async (itemRef) => {
-        const url = await getDownloadURL(itemRef);
-        const data = await getMetadata(itemRef);
-        return { ...data, url };
+    const querySnapshot = await getDocs(collection(db, "images"));
+    const data = await Promise.all(
+      querySnapshot.docs.map(async (doc) => {
+        // pegar a imagem do storage
+        const imageRef = ref(storage, `${doc.id}`);
+
+        const url = await getDownloadURL(imageRef);
+        return { id: doc.id, url, ...doc.data() };
       })
     );
-    return items;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const infoImg = async () => {
-  try {
-    const querySnapshot = await getDocs(query(collection(db, "images")));
-    const data = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() };
-    });
     return data;
   } catch (error) {
     console.log(error);

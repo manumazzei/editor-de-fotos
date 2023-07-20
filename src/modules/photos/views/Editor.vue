@@ -1,3 +1,134 @@
+<script>
+import Spin from "../componentes/Spin.vue";
+import Contrast from "../componentes/Contrast.vue";
+import Resize from "../componentes/Resize.vue";
+import Filters from "../componentes/Filters.vue";
+import { useStore } from "@/composables/useStore";
+
+const { content } = useStore();
+
+export default {
+  name: "PhotoEditor",
+  components: {
+    Spin,
+    Contrast,
+    Resize,
+    Filters,
+  },
+  data() {
+    return {
+      nome: "",
+      dataEdicao: "",
+      descricao: "",
+      medidas: "",
+      fotografo: "",
+      imgRef: null,
+      showSpin: false,
+
+      showInfos: false,
+      nome: "",
+      dataEdicao: "",
+      descricao: "",
+      medidas: "",
+      fotografo: "",
+
+      showBrilho: false,
+      showResize: false,
+      showFiltros: false,
+      showModalInfos: false,
+      showEditor: true,
+      image: null,
+      canvas: null,
+      undoStack: [],
+      redoStack: [],
+    };
+  },
+  mounted() {
+    this.canvas = this.$refs.canvas;
+    this.fabricCanvas = new fabric.Canvas(this.canvas);
+  },
+  methods: {
+    handleFileSelect(event) {
+      const file = event.target.files[0];
+      this.imgRef = file;
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const dataURL = e.target.result;
+
+        fabric.Image.fromURL(dataURL, (img) => {
+          this.image = img;
+
+          this.canvas = new fabric.Canvas(this.$refs.canvas);
+          this.canvas.add(this.image);
+
+          // tamanho do canvas e da imagem
+          const canvasWidth = this.canvas.width;
+          const canvasHeight = this.canvas.height;
+          const imageWidth = this.image.width;
+          const imageHeight = this.image.height;
+
+          if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
+            // Calcula a escala para ajustar a imagem ao canvas
+            const scaleX = canvasWidth / imageWidth;
+            const scaleY = canvasHeight / imageHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            // Ajusta a escala da imagem para caber no canvas
+            this.image.scaleX = scale;
+            this.image.scaleY = scale;
+
+            // Centraliza a imagem no canvas
+            const x = (canvasWidth - this.image.getScaledWidth()) / 2;
+            const y = (canvasHeight - this.image.getScaledHeight()) / 2;
+
+            // Define as coordenadas x e y da imagem
+            this.image.set({ left: x, top: y });
+          }
+        });
+      };
+
+      reader.readAsDataURL(file);
+    },
+
+    applyFilters() {
+      this.image.applyFilters();
+      this.canvas.renderAll();
+    },
+
+    resetFilters() {
+      if (this.image) {
+        this.image.filters = [];
+        this.image.applyFilters();
+        this.canvas.requestRenderAll();
+      }
+    },
+    GoBack() {
+      this.$router.push("/dashboard");
+    },
+    changeModals() {
+      this.showEditor = false;
+      this.showModalInfos = true;
+    },
+    async handleSave() {
+      const payload = {
+        nome: this.nome.valueOf(),
+        dataEdicao: this.dataEdicao.valueOf(),
+        descricao: this.descricao.valueOf(),
+        medidas: this.medidas.valueOf(),
+        fotografo: this.fotografo.valueOf(),
+      };
+      const imgPayload = this.canvas.toDataURL("image/jpeg");
+      const res = await content.photo.createItem(payload, imgPayload);
+      if (res) {
+        alert("criado com sucesso!");
+        this.$router.push("/dashboard");
+      }
+    },
+  },
+};
+</script>
+
 <template>
   <v-sheet
     class="d-flex flex-column align-center bg-grey-darken-4"
@@ -45,7 +176,6 @@
         prepend-icon="mdi-paperclip"
         variant="outlined"
         :show-size="1000"
-        @click:clear="clearImg"
         @change="handleFileSelect"
       >
         <template v-slot:selection="{ fileNames }">
@@ -227,150 +357,3 @@
   </v-sheet>
 </template>
 
-<script>
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-import Spin from "../componentes/Spin.vue";
-import Contrast from "../componentes/Contrast.vue";
-import Resize from "../componentes/Resize.vue";
-import Filters from "../componentes/Filters.vue";
-import { routerKey } from "vue-router";
-import { useRouter } from "vue-router";
-import { useStore } from "@/composables/useStore";
-import { photoStore } from "../store";
-
-const { content } = useStore();
-
-export default {
-  name: "PhotoEditor",
-  components: {
-    Spin,
-    Contrast,
-    Resize,
-    Filters,
-  },
-  data() {
-    return {
-      nome: "",
-      dataEdicao: "",
-      descricao: "",
-      medidas: "",
-      fotografo: "",
-      imgRef: null,
-      showSpin: false,
-
-      showInfos: false,
-      nome: "",
-      dataEdicao: "",
-      descricao: "",
-      medidas: "",
-      fotografo: "",
-      imgRef: null,
-
-      showBrilho: false,
-      showResize: false,
-      showFiltros: false,
-      showModalInfos: false,
-      showEditor: true,
-      image: null,
-      canvas: null,
-      undoStack: [],
-      redoStack: [],
-    };
-  },
-  mounted() {
-    this.canvas = this.$refs.canvas;
-    this.fabricCanvas = new fabric.Canvas(this.canvas);
-  },
-  methods: {
-    clearImg() {
-      this.canvas = null;
-    },
-    handleFileSelect(event) {
-      const file = event.target.files[0];
-      this.imgRef = file;
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        const dataURL = e.target.result;
-
-        fabric.Image.fromURL(dataURL, (img) => {
-          this.image = img;
-
-          this.canvas = new fabric.Canvas(this.$refs.canvas);
-          this.canvas.add(this.image);
-
-          // tamanho do canvas e da imagem
-          const canvasWidth = this.canvas.width;
-          const canvasHeight = this.canvas.height;
-          const imageWidth = this.image.width;
-          const imageHeight = this.image.height;
-
-          if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
-            // Calcula a escala para ajustar a imagem ao canvas
-            const scaleX = canvasWidth / imageWidth;
-            const scaleY = canvasHeight / imageHeight;
-            const scale = Math.min(scaleX, scaleY);
-
-            // Ajusta a escala da imagem para caber no canvas
-            this.image.scaleX = scale;
-            this.image.scaleY = scale;
-
-            // Centraliza a imagem no canvas
-            const x = (canvasWidth - this.image.getScaledWidth()) / 2;
-            const y = (canvasHeight - this.image.getScaledHeight()) / 2;
-
-            // Define as coordenadas x e y da imagem
-            this.image.set({ left: x, top: y });
-          }
-        });
-      };
-
-      reader.readAsDataURL(file);
-    },
-
-    applyFilters() {
-      this.image.applyFilters();
-      this.canvas.renderAll();
-    },
-
-    resetFilters() {
-      if (this.image) {
-        this.image.filters = [];
-        this.image.applyFilters();
-        this.canvas.requestRenderAll();
-      }
-    },
-    handleInfos(event) {
-      this.imgRef = event.target.files[0];
-    },
-    openInfos() {
-      this.showInfos = true;
-    },
-    GoBack() {
-      this.$router.push("/dashboard");
-    },
-    openModalInfos() {
-      this.showModalInfos = true;
-    },
-    changeModals() {
-      this.showEditor = false;
-      this.showModalInfos = true;
-    },
-    async handleSave() {
-      const payload = {
-        nome: this.nome.valueOf(),
-        dataEdicao: this.dataEdicao.valueOf(),
-        descricao: this.descricao.valueOf(),
-        medidas: this.medidas.valueOf(),
-        fotografo: this.fotografo.valueOf(),
-      };
-      const imgPayload = this.canvas.toDataURL("image/jpeg");
-      const res = await content.photo.createItem(payload, imgPayload);
-      if (res) {
-        alert("criado com sucesso!");
-        this.$router.push("/dashboard");
-      }
-    },
-  },
-};
-</script>

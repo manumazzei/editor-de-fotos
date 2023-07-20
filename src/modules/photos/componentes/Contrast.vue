@@ -1,3 +1,60 @@
+<script>
+export default {
+  props: ["image"],
+  emits: ["close", "filter", "reset"],
+  data() {
+    return {
+      contrast: 0,
+      brightness: 0,
+      saturation: 0,
+      hue: 0,
+    };
+  },
+  methods: {
+    brilhoEcontraste() {
+      const brightness = this.brightness / 200; // escala de -0,5 a 0,5
+      const contrast = (this.contrast + 100) / 100; // escala de 0 a 2
+      const saturation = (this.saturation + 100) / 100; // escala de 0 a 2
+      const hue = this.hue; // ângulo de -180 a 180
+
+      const brightnessFilter = new fabric.Image.filters.Brightness({
+        brightness: brightness,
+      });
+      const contrastFilter = new fabric.Image.filters.Contrast({
+        contrast: contrast,
+      });
+      const saturationFilter = new fabric.Image.filters.Saturation({
+        saturation: saturation,
+      });
+
+      const hueFilter = new fabric.Image.filters.HueRotation({
+        rotation: hue,
+      });
+      this.image.filters = [
+        new fabric.Image.filters.Brightness({ brightness: brightness }),
+        new fabric.Image.filters.Contrast({ contrast: contrast }),
+        new fabric.Image.filters.Saturation({ saturation: saturation }),
+        new fabric.Image.filters.HueRotation({ rotation: hue }),
+      ];
+
+      this.$emit("filter", [
+        brightnessFilter,
+        contrastFilter,
+        saturationFilter,
+        hueFilter,
+      ]);
+    },
+    reset() {
+      this.brightness = 0;
+      this.contrast = 0;
+      this.saturation = 0;
+      this.hue = 0;
+      this.$emit("reset");
+    },
+  },
+};
+</script>
+
 <template>
   <v-sheet
     style="background-color: rgb(245, 245, 245);"
@@ -79,59 +136,3 @@
   </v-sheet>
 </template>
 
-<script>
-export default {
-  props: ["image"],
-  emits: ["close", "filter", "reset"],
-  data() {
-    return {
-      contrast: 0,
-      brightness: 0,
-      saturation: 0,
-      hue: 0,
-    };
-  },
-  methods: {
-    brilhoEcontraste() {
-      const brightness = this.brightness / 200; // escala de -0,5 a 0,5
-      const contrast = (this.contrast + 100) / 100; // escala de 0 a 2
-      const saturation = (this.saturation + 100) / 100; // escala de 0 a 2
-      const hue = this.hue; // ângulo de -180 a 180
-
-      const brightnessFilter = new fabric.Image.filters.Brightness({
-        brightness: brightness,
-      });
-      const contrastFilter = new fabric.Image.filters.Contrast({
-        contrast: contrast,
-      });
-      const saturationFilter = new fabric.Image.filters.Saturation({
-        saturation: saturation,
-      });
-
-      const hueFilter = new fabric.Image.filters.HueRotation({
-        rotation: hue,
-      });
-      this.image.filters = [
-        new fabric.Image.filters.Brightness({ brightness: brightness }),
-        new fabric.Image.filters.Contrast({ contrast: contrast }),
-        new fabric.Image.filters.Saturation({ saturation: saturation }),
-        new fabric.Image.filters.HueRotation({ rotation: hue }),
-      ];
-
-      this.$emit("filter", [
-        brightnessFilter,
-        contrastFilter,
-        saturationFilter,
-        hueFilter,
-      ]);
-    },
-    reset() {
-      this.brightness = 0;
-      this.contrast = 0;
-      this.saturation = 0;
-      this.hue = 0;
-      this.$emit("reset");
-    },
-  },
-};
-</script>
